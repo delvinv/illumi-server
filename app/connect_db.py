@@ -33,4 +33,7 @@ def validate_email(email):
     final_query = get_users_query.format(email)
     cursor.execute(final_query)
     output = cursor.fetchall()
+    if len(output) > 0:
+        print "SQL has output"
+    print str(output)
     return output

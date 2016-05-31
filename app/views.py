@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, json, redirect
+from flask import Flask, render_template, request, json, redirect, session
 from app import app
 from werkzeug import generate_password_hash, check_password_hash
 import connect_db
 
+app.secret_key = 'this is my secret key'
 
 @app.route('/')
 @app.route('/index')
@@ -18,7 +19,7 @@ def showSignUp():
     return render_template('signup.html')
 
 
-@app.route('/signUp', methods=['POST'])
+@app.route('/signUp', methods=['POST', 'GET'])
 def signUp():
     # read the incoming values
     _name = request.form['inputName']
@@ -30,7 +31,8 @@ def signUp():
         _hashed_password = generate_password_hash(_password)
         db_result = connect_db.signup_to_database(_name, _email, _hashed_password)
         print db_result
-        return json.dumps({'message':'User created successfully !'})
+        return redirect('/userHome')
+        # return json.dumps({'message':'User created successfully !'})
     else:
         return json.dumps({'html': '<span>Enter all fields please!</span>'})
 
@@ -39,24 +41,44 @@ def signUp():
 def showSignIn():
     return render_template('signin.html')
 
-@app.route('/signIn', methods=['POST'])
+
+@app.route('/signIn', methods=['POST', 'GET'])
 def signIn():
-    try:
+    print "Hello world"
+    # All done inside the form
+    if request.method == "POST":
+        # TODO: validate input
         _email = request.form['inputEmail']
         _password = request.form['inputPassword']
         if _email and _password:
             output = connect_db.validate_email(_email)
             if len(output) > 0:
                 if check_password_hash(str(output[0][3]), _password):
-                    return redirect('/userHome')
+                    session['user'] = output[0][0]
+                    return redirect('userHome')
                 else:
-                    return render_template('error.html',error = 'Wrong Email address or Password.')
+                    return render_template('error.html', error="Password check failed!")
+            else:
+                return render_template('error.html', error="user does not exist!")
         else:
-            return render_template('error.html',error = 'Wrong Email address or Password.')
-    except Exception as e:
-        return render_template('error.html', error=str(e))
+            return render_template('error.html', error="Both fields required..")
+    return render_template('signin.html')
 
 
 @app.route('/userHome')
 def userHome():
-    return render_template('userHome.html')
+    if session.get('user'):
+        return render_template('userHome.html')
+    else:
+        return render_template('error.html', error="Unauthorized access!")
+
+
+@app.route('/error')
+def error_page(error_message):
+    return render_template('error.html', error=error_message)
+
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return render_template('index.html')
