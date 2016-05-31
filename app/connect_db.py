@@ -37,3 +37,15 @@ def validate_email(email):
         print "SQL has output"
     print str(output)
     return output
+
+
+# TODO: currently a copy of above method, make it more relevant..
+def add_file_details_to_db(filename, project_id, media_type, user_username):
+    get_users_query = "INSERT INTO BucketList.tbl_media(filename, project_id, media_type, user_username) VALUES('{}','{}','{}','{}') "
+    final_query = get_users_query.format([filename, project_id, media_type, user_username])
+    cursor.execute(final_query)
+    output = cursor.fetchall()
+    if len(output) > 0:
+        print "SQL has output"
+    print str(output)
+    return output

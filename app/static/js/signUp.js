@@ -35,3 +35,17 @@ $(function(){
 	//	});
 	//});
 });
+
+$(function(){
+    var options = {
+       type: 'video',
+       frameInterval: 20 // minimum time between pushing frames to Whammy (in milliseconds)
+    };
+    var recordRTC = RecordRTC(mediaStream, options);
+    recordRTC.startRecording();
+    recordRTC.stopRecording(function(videoURL) {
+        video.src = videoURL;
+        var recordedBlob = recordRTC.getBlob();
+        var recordedUrl = recordRTC.getDataURL(function(dataURL) { });
+    });
+});

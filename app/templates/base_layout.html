@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block head %}  {% endblock %}
+    <title>
+        {% block title %} - illumi {% endblock %}
+    </title>
+    <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='css/jumbotron-narrow.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='css/signup.css') }}" rel="stylesheet"/>
+    <script src="{{ url_for('static',filename='js/jquery-1.12.4.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/signUp.js') }}"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    {% block navigation%}
+                        <li role="presentation" class="active"><a href="userHome">My Home</a> </li>
+                        <li role="presentation" ><a href="#">Start Whisper</a> </li>
+                        <li role="presentation" ><a href="#">Track Whisper</a> </li>
+                        <li role="presentation" ><a href="logout">Logout</a> </li>
+                    {% endblock %}
+                </ul>
+            </nav>
+            <h3 class="text-muted">
+                {% block muted_heading %}
+
+                {% endblock %}
+            </h3>
+        </div>
+
+        <div class="jumbotron">
+            <h1>{% block main_heading %} {% endblock %}</h1>
+            {% block main_content %}
+
+            {% endblock %}
+        </div>
+        <footer class="footer">
+            <p>&copy; Chinese Whispers 2016</p>
+        </footer>
+    </div>
+</body>
+</html>
