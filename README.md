@@ -1,0 +1,1 @@
+Contains the server code for illumi, the "research chinese whispers" project that connects researchers with older citizens. Developed in Flask & Python... Technologies for Digital Civics project for Dan Howard, Jen Manuel and Delvin Varghese.
