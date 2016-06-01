@@ -1,0 +1,23 @@
+{% extends "base_layout.html" %}
+{% block title %}Track Whisper {% endblock %}
+{% block navigation %}
+    <li role="presentation" ><a href="userHome">My Home</a> </li>
+    <li role="presentation" ><a href="#">Start Whisper</a> </li>
+    <li role="presentation" class="active"><a href="#">Track Whisper</a> </li>
+    <li role="presentation" ><a href="logout">Logout</a> </li>
+{% endblock %}
+
+{% block muted_heading %} I can do it {% endblock %}
+{% block main_heading %} Track Whisper {% endblock %}
+
+{% block main_content %}
+    <div class="jumbotron">
+        <form class="form-signin" method="POST" action="{{ url_for('upload_file') }}">
+            <label for="file" class="sr-only">Choose video</label>
+            <input type="file" accept="video/*" name="file" id="file" class="form-control" required autofocus>
+            <label for="inputName" class="sr-only">Video Title</label>
+            <input type="name" name="inputName" id="inputName" class="form-control" placeholder="Video Title" required autofocus>
+            <button id="btnSignIn" class="btn btn-lg btn-primary btn-block" type="submit">Start this sucker</button>
+        </form>
+    </div>
+{% endblock %}

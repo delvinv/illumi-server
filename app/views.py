@@ -3,6 +3,15 @@ from app import app
 from werkzeug import generate_password_hash, check_password_hash
 import connect_db
 
+from flask_sockets import Sockets
+sockets = Sockets(app)
+
+@sockets.route('/echo')
+def echo_socket(ws):
+    while True:
+        message = ws.receive()
+        ws.send(message)
+
 # Imports for file upload..
 import os
 from werkzeug.utils import secure_filename
