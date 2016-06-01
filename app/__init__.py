@@ -5,4 +5,5 @@ from app import views
 from app import whisper_views
 
 from views_dir import user_management
+from views_dir import whispers_manager
 # from whisper_views import *
