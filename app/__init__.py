@@ -4,5 +4,5 @@ app = Flask(__name__)
 from app import views
 from app import whisper_views
 
-# from views import *
+from views_dir import user_management
 # from whisper_views import *
