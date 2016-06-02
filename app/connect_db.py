@@ -79,6 +79,23 @@ def add_file_details_to_db(filename, project_id, media_type, username, current_t
         print e.message
         return False
 
+
+def add_json_status_to_db(json_object, project_id):
+    query = "UPDATE BucketList.tbl_projects SET status='{}' WHERE project_id='{}'"
+    final_query = query.format(json_object, project_id)
+
+    try:
+        cursor.execute(final_query)
+        conn.commit()
+        print str(json_object) + " inserted successfully.."
+        return True
+    except MySQLdb.IntegrityError, e:
+        print "Not done " + str(e.args)
+        conn.rollback()
+        print e.message
+        return False
+
+
 if __name__ == '__main__':
     current_timestamp = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
     # a = add_new_whisper("a@d", "my_diaries_7", current_timestamp)

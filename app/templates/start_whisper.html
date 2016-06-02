@@ -19,6 +19,7 @@
             <input type="file" accept="audio/*" name="audio_file" id="audio_file" class="form-control" required autofocus>
             <label for="inputName" class="sr-only">Video Title</label>
             <input type="name" name="title" id="title" class="form-control" placeholder="Whisper Title" required autofocus>
+            <input type="name" name="username" id="username" style="display: none" value="{{ session['user'] }}">
             <button id="btnSignIn" class="btn btn-lg btn-primary btn-block" type="submit">Start this sucker</button>
         </form>
     </div>
