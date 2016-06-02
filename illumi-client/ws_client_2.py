@@ -9,7 +9,7 @@ SERVER_PORT = '8000'
 ws = create_connection("ws://localhost:8000/echo")
 
 # When program starts, open a connection and send a websocket packet to server with following command
-message = '{"id": "beargrylls", "name": "delvin_book"}'
+message = '{"id": "conandoyle", "name": "delvin_book"}'
 print "Sending " + message
 ws.send(message)
 
