@@ -14,11 +14,11 @@
     <div class="jumbotron">
         <form class="form-signin" method="POST" action="{{ url_for('upload_file') }}" enctype="multipart/form-data">
             <label for="file" class="sr-only">Choose video</label>
-            <input type="file" accept="video/*" name="file" id="file" class="form-control" required autofocus>
-            <label for="audio_file" class="sr-only">Choose video</label>
-            <input type="file"  name="audio_file" id="audio_file" class="form-control" required autofocus>
+            <input type="file" accept="image/*" name="file" id="file" class="form-control" required autofocus>
+            <label for="audio_file"  class="sr-only">Choose video</label>
+            <input type="file" accept="audio/*" name="audio_file" id="audio_file" class="form-control" required autofocus>
             <label for="inputName" class="sr-only">Video Title</label>
-            <input type="name" name="inputName" id="inputName" class="form-control" placeholder="Video Title" required autofocus>
+            <input type="name" name="title" id="title" class="form-control" placeholder="Whisper Title" required autofocus>
             <button id="btnSignIn" class="btn btn-lg btn-primary btn-block" type="submit">Start this sucker</button>
         </form>
     </div>
