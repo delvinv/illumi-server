@@ -94,10 +94,8 @@ def upload_file():
             whisper_id = connect_db.add_new_whisper(username, whisper_title, current_timestamp)
             audio_to_db = connect_db.add_file_details_to_db(form_audio_url,whisper_id,"audio",username,current_timestamp)
             image_to_db = connect_db.add_file_details_to_db(form_image_url,whisper_id,"image",username,current_timestamp)
-            if audio_to_db:
-                print "[STATUS] audio saved to database.."
-            if image_to_db:
-                print "[STATUS] image saved to database.."
+            if audio_to_db and image_to_db:
+                print "[STATUS] files saved to database.."
 
             # if the form is posted from a browser, we can assume that it is a researcher sharing their content
             # and start the whisper process.
@@ -121,6 +119,7 @@ def upload_file():
                     web_socket.send(json_string)
                     print "Did you see the printer tremble?"
                     print json_string
+                    return render_template('success.html'), 200
             # TODO: now push it to the firs person in the matrix....
             else:
                 #  We know that since this request was not initiated from a browser due to lack of session variable,
@@ -140,7 +139,7 @@ def upload_file():
                     next_item = shuffled_list[item_position+1]
                     web_socket = shared_module.connected_clients[next_item]
                     web_socket.send("http://jawrainey.me/img/me.jpg")
-                    return "Success other mate!", 200
+                    return render_template('success.html'), 200
             return redirect(url_for('track_whispers')), 200
     return render_template('userHome.html'), 400
 
