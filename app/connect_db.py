@@ -16,14 +16,14 @@ conn = mysql.connect()
 conn.autocommit(True)
 
 cursor = conn.cursor()
-print "---Successfully connected to DB---"
+print "[DB] " + "---Successfully connected to DB---"
 
 
 def signup_to_database(username, email, password):
     insert_query = "INSERT INTO BucketList.tbl_user(user_name, user_username, user_password) VALUES('{}','{}','{}')"
     final_query = insert_query.format(username, email, password)
-    print "Password is: " + password
-    print "Query: " + final_query
+    print "[DB] " + "Password is: " + password
+    print "[DB] " + "Query: " + final_query
     cursor.execute(final_query)
     output = cursor.fetchall()
     return output
@@ -35,8 +35,8 @@ def validate_email(email):
     cursor.execute(final_query)
     output = cursor.fetchall()
     if len(output) > 0:
-        print "SQL has output"
-    print str(output)
+        print "[DB] " + "SQL has output"
+    print "[DB] " + str(output)
     return output
 
 def get_id_from_project(username, title):
@@ -44,7 +44,7 @@ def get_id_from_project(username, title):
     query_b = query_a.format(title, username)
     cursor.execute(query_b)
     output = cursor.fetchone()
-    print output[0]
+    print "[DB] " + output[0]
     return output[0]
 
 
@@ -54,12 +54,12 @@ def add_new_whisper(username, title, current_timestamp):
     try:
         cursor.execute(query_1)
         conn.commit()
-        print str(username) + " inserted successfully.."
+        print "[DB] " + str(username) + " inserted successfully.."
         return get_id_from_project(username, title)
     except MySQLdb.IntegrityError, e:
-        print "Not done " + str(e.args)
+        print "[DB] " + "Not done " + str(e.args)
         conn.rollback()
-        print e.message
+        print "[DB] " + e.message
         return None
 
 
@@ -71,12 +71,12 @@ def add_file_details_to_db(filename, project_id, media_type, username, current_t
     try:
         cursor.execute(final_query)
         conn.commit()
-        print str(username) + " inserted successfully.."
+        print "[DB] " + str(username) + " inserted successfully.."
         return True
     except MySQLdb.IntegrityError, e:
         print "Not done " + str(e.args)
         conn.rollback()
-        print e.message
+        print "[DB] " + e.message
         return False
 
 
@@ -87,10 +87,10 @@ def add_json_status_to_db(json_object, project_id):
     try:
         cursor.execute(final_query)
         conn.commit()
-        print str(json_object) + " inserted successfully.."
+        print "[DB] " + str(json_object) + " inserted successfully.."
         return True
     except MySQLdb.IntegrityError, e:
-        print "Not done " + str(e.args)
+        print "[DB] " + "Not done " + str(e.args)
         conn.rollback()
         print e.message
         return False

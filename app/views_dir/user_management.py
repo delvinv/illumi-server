@@ -26,11 +26,11 @@ def signUp():
         return json.dumps({'html': '<span>Enter all fields please!</span>'})
 
 
+# @app.route('/showSignIn')
+# def showSignIn():
+#     return render_template('signin.html')
+
 @app.route('/showSignIn')
-def showSignIn():
-    return render_template('signin.html')
-
-
 @app.route('/signIn', methods=['POST', 'GET'])
 def signIn():
     print "Hello world"
