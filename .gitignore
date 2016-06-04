@@ -1,5 +1,8 @@
 *.pyc
-.idea/*
+.idea/
 venv/*
+venv/
 flask/*
+flask/
 app/secret_config.py
+app/config.py
