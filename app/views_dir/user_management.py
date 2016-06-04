@@ -44,6 +44,8 @@ def signIn():
             if len(output) > 0:
                 if check_password_hash(str(output[0][3]), _password):
                     session['user'] = output[0][0]
+                    session['user_email'] = _email
+                    print session['user']
                     return redirect('userHome')
                 else:
                     return render_template('error.html', error="Password check failed!")

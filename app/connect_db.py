@@ -39,6 +39,7 @@ def validate_email(email):
     print "[DB] " + str(output)
     return output
 
+
 def get_id_from_project(username, title):
     query_a = "select project_id from BucketList.tbl_projects where title='{}' and user_username='{}'"
     query_b = query_a.format(title, username)
@@ -102,13 +103,63 @@ def get_json_status_from_db(project_id):
     try:
         cursor.execute(final_query)
         conn.commit()
-        print "[DB] " + str(project_id) + " inserted successfully.."
+        print "[DB] " + str(project_id) + " retrieved successfully.."
         return True
     except MySQLdb.IntegrityError, e:
-        print "[DB] " + "Not done " + str(e.args)
+        print "[DB] " + "Not retrieved " + str(e.args)
         conn.rollback()
         print e.message
         return False
+
+
+def get_media_from_db(project_id, media_type):
+    query = "SELECT filename FROM BucketList.tbl_media WHERE project_id= '{}' AND media_type='{}' ORDER BY media_type ASC, origin_date ASC"
+    final_query = query.format(project_id, media_type)
+    try:
+        cursor.execute(final_query)
+        conn.commit()
+        output = cursor.fetchall()
+        print "[DB] " + str(project_id) + " retrieved successfully.."
+        return output
+    except MySQLdb.IntegrityError, e:
+        print "[DB] " + "Not retrieved.. " + str(e.args)
+        conn.rollback()
+        print e.message
+        return None
+
+
+def get_projects_from_db(user_username):
+    query = "SELECT * FROM BucketList.tbl_projects WHERE user_username= '{}'"
+    final_query = query.format(user_username)
+    try:
+        cursor.execute(final_query)
+        conn.commit()
+        output = cursor.fetchall()
+        print "[DB] " + str(user_username) + " retrieved successfully.."
+        return output
+    except MySQLdb.IntegrityError, e:
+        print "[DB] " + "Not retrieved.. " + str(e.args)
+        conn.rollback()
+        print e.message
+        return None
+
+
+def get_media_for_username(username):
+    try:
+        projects_list = get_projects_from_db(username)
+        project_media = []
+        for project in projects_list:
+            project_id = project[0]
+            project_name = project[2]
+
+            audio_filenames = get_media_from_db(project_id, "audio")
+            image_filenames = get_media_from_db(project_id, "image")
+
+            project_single = {"project_name": project_name, "audio_filenames": audio_filenames, "image_filenames": image_filenames}
+            project_media.append(project_single)
+    except Exception, e:
+        print "[DB] error " +e.message
+    return project_media
 
 if __name__ == '__main__':
     current_timestamp = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())

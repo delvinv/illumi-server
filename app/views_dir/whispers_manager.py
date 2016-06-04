@@ -120,9 +120,6 @@ def whisper_finished_notification(whisper_id):
 
 @app.route('/uploadWhisper', methods=['POST', 'GET'])
 def upload_file():
-    if request.method == 'GET':
-        a = send_email("Hello World",secret_config.MAIL_USERNAME,['delvin.friends@gmail.com'],"Why not email","<h1>Flask Email</h1>")
-        print a
     print "[" + request.method + "] Request.. "
     if request.method == 'POST':
         # check if file is present in the POST
@@ -226,6 +223,42 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
 
+
+@app.route('/trackWhisper')
 @app.route('/track')
 def track_whispers():
-    return render_template('track_whisper.html')
+    if session.get('user_email'):
+        user_name = session['user_email']
+        # Check what projects exist from that author and create links for them..
+        media_collection = connect_db.get_media_for_username(user_name)
+
+        audio_filenames_list = []
+        image_filenames_list = []
+        project_names_list = []
+        for item in media_collection:
+            print item
+            print "ITEM IS: " + str(item["audio_filenames"][0][0])
+            audio_filenames_list.append(str(item["audio_filenames"][0][0]))
+            image_filenames_list.append(str(item["image_filenames"][0][0]))
+            project_names_list.append(str(item["project_name"]))
+        # Generate all the projects and links on a single page..
+        print audio_filenames_list
+        return render_template('track_whisper.html',
+                               audio_filenames_list=audio_filenames_list,
+                               project_names_list=project_names_list,
+                               image_filenames_list=image_filenames_list)
+    else:
+        return render_template('error.html', error="Unauthorized access!")
+
+
+# Backup method if websockets doesnt work for server to pi connection..
+@app.route('/check_whispers')
+def check_whispers():
+    if request.method=='POST':
+        print "TBC"
+        # Check if there are projects waiting that need this Pi as the next receiver..
+        # Put the first match project image and audio into a json
+        # Convert json into strings..
+        # Send json as a response using make_response and return it here..
+    else:
+        return render_template("error.html")

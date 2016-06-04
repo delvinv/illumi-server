@@ -16,7 +16,7 @@
 	//		}
 	//	});
 	//});
-});
+//});
 
 // Signing into the application
 //$(function(){
