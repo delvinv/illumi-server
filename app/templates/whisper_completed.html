@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="{{ url_for('static',filename='css/bootstrap.min.css') }}" rel="stylesheet"/>
+</head>
+<body>
+    <p>Dear {{ user_firstname }},</p>
+
+    <p>You deserve to know of these glad tidings.</p>
+
+    <p>Your project, {{ whisper_name }} has made its way back to you
+    after travelling through untold participants and research reflections.</p>
+
+    <p>Go on the link below to track the journey it went through,
+    and maybe you can do some self-reflection yourself!
+
+    <a href="{{ whisper_url }}">{{ whisper_url }}</a></p>
+
+    <p>All the best,<br/>
+
+    <em>the illumi team</em></p>
+</body>
+</html>

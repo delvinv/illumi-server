@@ -1,0 +1,15 @@
+Dear {{ user_firstname }},
+
+You deserve to know of these glad tidings.
+
+Your project, {{ whisper_name }} has made its way back to you
+after travelling through untold participants and research reflections.
+
+Go on the link below to track the journey it went through,
+and maybe you can do some self-reflection yourself!
+
+{{ whisper_url }}
+
+All the best,
+
+The illumi team

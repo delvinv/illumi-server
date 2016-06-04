@@ -8,6 +8,27 @@ from .. import connect_db
 import shared_module
 from random import shuffle
 
+# Mailing support imports
+from threading import Thread
+from flask_mail import Mail, Message
+from app import secret_config
+# from flask.ext.mail import Mail, Message
+app.config.from_object(secret_config)
+mail = Mail(app)
+from app.secret_config import *
+
+
+def send_async_email(app, msg):
+    with app.app_context():
+        mail.send(msg)
+
+def send_email(subject, sender, recipients, text_body, html_body):
+    msg = Message(subject, sender=sender, recipients=recipients)
+    msg.body = text_body
+    msg.html = html_body
+    thr = Thread(target=send_async_email, args=[app, msg])
+    thr.start()
+
 import uuid
 uuid_generator = uuid.uuid4()
 
@@ -68,8 +89,40 @@ def generate_form_contents_json(audio_file, image_file, whisper_id):
     return form_contents_json_string
 
 
+@app.route('/mail')
+def wow_mail():
+    # a = send_email("Hello World",secret_config.MAIL_USERNAME,['delvin.friends@gmail.com'],"Why not email","<h1>Flask Email</h1>")
+    a = whisper_finished_notification("hohohoh")
+    print a
+    return render_template('error.html')
+
+
+def whisper_finished_notification(whisper_id):
+    # TODO: get whisper_name and User's full name based on info we have..
+    # PLACEHOLDER..
+    whisper_name = "Awesome Project"
+    user_fullname = "Jen Manuel"
+    user_firstname = "Jen"
+    user_username = "delvin.friends@gmail.com"
+    whisper_url = "http://localhost/track"
+    subject_string = "[illumi] '{}', your whisper '{}' has returned!".format(user_firstname, whisper_name)
+    send_email(subject_string,
+               secret_config.MAIL_USERNAME,
+               [user_username],
+               render_template("whisper_completed_email.txt",
+                               user_firstname=user_firstname, whisper_name=whisper_name,
+                               whisper_url=whisper_url),
+               render_template("whisper_completed.html",
+                               user_firstname=user_firstname, whisper_name=whisper_name,
+                               whisper_url=whisper_url))
+    return "OK"
+
+
 @app.route('/uploadWhisper', methods=['POST', 'GET'])
 def upload_file():
+    if request.method == 'GET':
+        a = send_email("Hello World",secret_config.MAIL_USERNAME,['delvin.friends@gmail.com'],"Why not email","<h1>Flask Email</h1>")
+        print a
     print "[" + request.method + "] Request.. "
     if request.method == 'POST':
         # check if file is present in the POST
