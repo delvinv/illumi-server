@@ -25,9 +25,9 @@ Developed using:
 - MySQL (database storage)
 
 
-API: 
+# API: 
 
-# Connect to Digital Civics wifi
+### !!Connect to Digital Civics wifi. None of this will work without it..!!
 
 ## Pi establishing connection with server: 
 
