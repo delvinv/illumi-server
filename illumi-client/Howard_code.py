@@ -1,18 +1,15 @@
 import requests
 from websocket import create_connection
 import json
-from random import randint
 
-SERVER_ADDRESS = 'localhost'
-SERVER_PORT = '8000'
-
-# random_int = randint(0,9999)
-fileRepo = "./fileRepo"
-files = {'image_file' : open("image.jpg", 'rb'), 'audio_file' : open('audio.wav', 'rb')}
+PI_USERNAME = "beargrylls"
+SOCKET_CONNECTION_URL = "ws://localhost:8000/echo"
+ws = create_connection(SOCKET_CONNECTION_URL)
 
 # IMPORTANT: whisper_id is a pre-existing number associated with already-created whispers on the server, so send me something that i have sent you already...
 # Random number used here for testing purposes only!
-piid = {'whisper_id' : "29", 'username' : "beargrylls"}
+files = {'image_file' : open("image.jpg", 'rb'), 'audio_file' : open('audio.wav', 'rb')}
+piid = {'whisper_id' : "29", 'username' : PI_USERNAME}
 url = 'http://localhost:8000/uploadWhisper'
 
 def PostRequest():
@@ -20,15 +17,30 @@ def PostRequest():
     print r.status_code
     print r.text
 
+
 def ServerWait():
-    # full_path = "ws://{}:{}/echo".format(SERVER_ADDRESS, SERVER_PORT)
-    # ws = create_connection(full_path)
-    ws = create_connection("ws://localhost:8000/echo")
+    ws = create_connection(SOCKET_CONNECTION_URL)
 
     # When program starts, open a connection and send a websocket packet to server with following command
-    message = '{"id": "beargrylls", "name": "delvin_book"}'
+    # IMPORTANT: whisper_id is a pre-existing number associated with already-created whispers on the server,
+    # so send me something that i have sent you already...
+    message = '{"whisper_id": "9845723958", "username": PI_USERNAME}'
     print "Sending " + message
     ws.send(message)
+
+    while True:
+        try:
+            result =  ws.recv()
+            print "Received '%s'" % result
+            result =  ws.recv()
+        except KeyboardInterrupt:
+            print "Stopped manually..."
+        except Exception, e:
+            print e.message
+            ws = create_connection(SOCKET_CONNECTION_URL)
+            ws.send("[SOCKET] " + PI_USERNAME + " connection restablished...")
+            print("[SOCKET] " + PI_USERNAME + " connection restablished...")
+
 
     # Now wait till you receive a message from the server (using a while loop).
     # The message will be a string but it contains JSON data:
@@ -40,10 +52,6 @@ def ServerWait():
     # Basically, use the json module to convert the string into a JSON object. Then get the audio and image from
     # the URLs given. This can be done as done here: http://stackoverflow.com/a/19602990/1341215
 
-    while True:
-        result =  ws.recv()
-        print "Received '%s'" % result
-        result =  ws.recv()
 
 
 

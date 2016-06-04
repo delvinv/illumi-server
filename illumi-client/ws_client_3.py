@@ -1,16 +1,14 @@
 from websocket import create_connection
-import json
-
-SERVER_ADDRESS = 'localhost'
-SERVER_PORT = '8000'
 PI_USERNAME = "janeeyre"
-# full_path = "ws://{}:{}/echo".format(SERVER_ADDRESS, SERVER_PORT)
-# ws = create_connection(full_path)
 SOCKET_CONNECTION_URL = "ws://localhost:8000/echo"
 ws = create_connection(SOCKET_CONNECTION_URL)
 
+import json
+# full_path = "ws://{}:{}/echo".format(SERVER_ADDRESS, SERVER_PORT)
+# ws = create_connection(full_path)
+
 # When program starts, open a connection and send a websocket packet to server with following command
-message = '{"whisper_id": "9845723958", "username": "janeeyre"}'
+message = '{"whisper_id": "9845723958", "username": PI_USERNAME}'
 print "Sending " + message
 ws.send(message)
 
