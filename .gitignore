@@ -2,3 +2,4 @@
 .idea/*
 venv/*
 flask/*
+app/secret_config.py

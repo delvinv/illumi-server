@@ -49,7 +49,7 @@ def get_id_from_project(username, title):
 
 
 def add_new_whisper(username, title, current_timestamp):
-    query = "INSERT INTO BucketList.tbl_projects(user_username, title, origin_date, status) VALUES('{}', '{}', '{}', 'started')"
+    query = "INSERT INTO BucketList.tbl_projects(user_username, title, origin_date, status) VALUES('{}', '{}', '{}', 'inactive')"
     query_1 = query.format(username, title, current_timestamp)
     try:
         cursor.execute(query_1)
@@ -95,6 +95,20 @@ def add_json_status_to_db(json_object, project_id):
         print e.message
         return False
 
+
+def get_json_status_from_db(project_id):
+    query = "SELECT * FROM BucketList.tbl_projects WHERE project_id= '{}'"
+    final_query = query.format(project_id)
+    try:
+        cursor.execute(final_query)
+        conn.commit()
+        print "[DB] " + str(project_id) + " inserted successfully.."
+        return True
+    except MySQLdb.IntegrityError, e:
+        print "[DB] " + "Not done " + str(e.args)
+        conn.rollback()
+        print e.message
+        return False
 
 if __name__ == '__main__':
     current_timestamp = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
