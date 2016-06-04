@@ -19,7 +19,11 @@ def signUp():
     if _name and _email and _password:
         _hashed_password = generate_password_hash(_password)
         db_result = connect_db.signup_to_database(_name, _email, _hashed_password)
-        print db_result
+        print "DB_Result = " + str(db_result)
+        output = connect_db.validate_email(_email)
+        if output:
+            session['user'] = output[0]
+            session['user_email'] = _email
         return redirect('/userHome')
         # return json.dumps({'message':'User created successfully !'})
     else:
@@ -30,7 +34,7 @@ def signUp():
 # def showSignIn():
 #     return render_template('signin.html')
 
-@app.route('/showSignIn')
+@app.route('/showSignIn', methods=['POST', 'GET'])
 @app.route('/signIn', methods=['POST', 'GET'])
 def signIn():
     print "Hello world"

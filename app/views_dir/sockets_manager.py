@@ -8,21 +8,26 @@ sockets = Sockets(app)
 
 @sockets.route('/echo')
 def echo_socket(web_socket):
+    try:
+        message = web_socket.receive()
+        print message
+        json_object = json.loads(message)
+        ws_username = json_object['username']
+    except ValueError:
+        print "[SOCKET] JSON decoding error.. "
 
-    message = web_socket.receive()
-    print message
-    json_object = json.loads(message)
-    client_id = json_object['id']
-    print "ID is "+ client_id
+    print "Username is "+ ws_username
 
     if not len(shared_module.connected_clients) > 3:
-        shared_module.connected_clients[client_id] = web_socket
+        shared_module.connected_clients[ws_username] = web_socket
     else:
         print "all 3 books connected!"
     while True:
         message = web_socket.receive()
         web_socket.send(message)
         # web_socket.send("Exit")
+
+
 
 @app.route('/')
 def hello():

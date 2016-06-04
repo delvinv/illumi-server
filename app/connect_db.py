@@ -35,7 +35,7 @@ def validate_email(email):
     cursor.execute(final_query)
     output = cursor.fetchall()
     if len(output) > 0:
-        print "[DB] " + "SQL has output"
+        print "[DB] " + "Login SQL has output"
     print "[DB] " + str(output)
     return output
 
@@ -98,18 +98,20 @@ def add_json_status_to_db(json_object, project_id):
 
 
 def get_json_status_from_db(project_id):
-    query = "SELECT * FROM BucketList.tbl_projects WHERE project_id= '{}'"
+    query = "SELECT status FROM BucketList.tbl_projects WHERE project_id= '{}'"
     final_query = query.format(project_id)
     try:
         cursor.execute(final_query)
         conn.commit()
+        output = cursor.fetchone()
         print "[DB] " + str(project_id) + " retrieved successfully.."
-        return True
+        return output[0]
     except MySQLdb.IntegrityError, e:
         print "[DB] " + "Not retrieved " + str(e.args)
         conn.rollback()
         print e.message
-        return False
+        return None
+
 
 
 def get_media_from_db(project_id, media_type):

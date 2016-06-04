@@ -3,13 +3,14 @@ import json
 
 SERVER_ADDRESS = 'localhost'
 SERVER_PORT = '8000'
-
+PI_USERNAME = "janeeyre"
 # full_path = "ws://{}:{}/echo".format(SERVER_ADDRESS, SERVER_PORT)
 # ws = create_connection(full_path)
-ws = create_connection("ws://localhost:8000/echo")
+SOCKET_CONNECTION_URL = "ws://localhost:8000/echo"
+ws = create_connection(SOCKET_CONNECTION_URL)
 
 # When program starts, open a connection and send a websocket packet to server with following command
-message = '{"id": "janeeyre", "name": "delvin_book"}'
+message = '{"whisper_id": "9845723958", "username": "janeeyre"}'
 print "Sending " + message
 ws.send(message)
 
@@ -24,9 +25,18 @@ ws.send(message)
 # the URLs given. This can be done as done here: http://stackoverflow.com/a/19602990/1341215
 
 while True:
-    result =  ws.recv()
-    print "Received '%s'" % result
-    result =  ws.recv()
+    try:
+        result =  ws.recv()
+        print "Received '%s'" % result
+        result =  ws.recv()
+    except KeyboardInterrupt:
+        print "Stopped manually..."
+    except Exception, e:
+        print e.message
+        ws = create_connection(SOCKET_CONNECTION_URL)
+        ws.send("[SOCKET] " + PI_USERNAME + " connection restablished...")
+        print("[SOCKET] " + PI_USERNAME + " connection restablished...")
+
 
 
 
