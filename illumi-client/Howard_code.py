@@ -1,18 +1,21 @@
 import requests
 from websocket import create_connection
-import json
+import json, time
+import sys
 
-PI_USERNAME = "beargrylls"
-SOCKET_CONNECTION_URL = "ws://localhost:8000/echo"
+print "Username is: " + str(sys.argv[1])
+PI_USERNAME = str(sys.argv[1])
+SOCKET_CONNECTION_URL = "ws://localhost:4000/echo"
 ws = create_connection(SOCKET_CONNECTION_URL)
+
 
 # IMPORTANT: whisper_id is a pre-existing number associated with already-created whispers on the server, so send me something that i have sent you already...
 # Random number used here for testing purposes only!
-files = {'image_file' : open("image.jpg", 'rb'), 'audio_file' : open('audio.wav', 'rb')}
-piid = {'whisper_id' : "29", 'username' : PI_USERNAME}
-url = 'http://localhost:8000/uploadWhisper'
-
-def PostRequest():
+def PostRequest(whisper_id):
+    files = {'image_file' : open("image.jpg", 'rb'), 'audio_file' : open('audio.wav', 'rb')}
+    piid = {'whisper_id': whisper_id, 'username': PI_USERNAME}
+    url = 'http://localhost:4000/uploadWhisper'
+    # print "[SOCKET]: " + "sending files using http.."
     r = requests.post(url, data=piid, files=files)
     print r.status_code
     print r.text
@@ -24,21 +27,27 @@ def ServerWait():
     # When program starts, open a connection and send a websocket packet to server with following command
     # IMPORTANT: whisper_id is a pre-existing number associated with already-created whispers on the server,
     # so send me something that i have sent you already...
-    message = '{"whisper_id": "9845723958", "username": PI_USERNAME}'
-    print "Sending " + message
-    ws.send(message)
+    message = {"pi_incoming_username": PI_USERNAME}
+    message_str = json.dumps(message)
+    print "Sending " + message_str
+    ws.send(message_str)
 
     while True:
         try:
             result =  ws.recv()
             print "Received '%s'" % result
-            result =  ws.recv()
+            json_object = json.loads(result)
+            whisper_id = json_object['whisper_id']
+            PostRequest(whisper_id)
         except KeyboardInterrupt:
-            print "Stopped manually..."
+            exit()
+            break
         except Exception, e:
             print e.message
+            print "Reconnecting in 30 seconds.."
+            time.sleep(10)
             ws = create_connection(SOCKET_CONNECTION_URL)
-            ws.send("[SOCKET] " + PI_USERNAME + " connection restablished...")
+            ws.send(message_str)
             print("[SOCKET] " + PI_USERNAME + " connection restablished...")
 
 
@@ -71,5 +80,5 @@ def ServerWait():
     # http://docs.python-requests.org/en/master/
 
 
-PostRequest()
+ServerWait()
 	

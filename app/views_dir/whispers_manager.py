@@ -86,7 +86,7 @@ def generate_form_contents_json(audio_file, image_file, whisper_id):
     form_contents_json = {
         "audio_url":audio_file,
         "image_url":image_file,
-        "project_id":whisper_id
+        "whisper_id":whisper_id
     }
     form_contents_json_string = json.dumps(form_contents_json)
     return form_contents_json_string
@@ -158,7 +158,8 @@ def upload_file():
             print "[STATUS] User is logged in..."
             # Set the whisper_id by adding it to the database and retrieving a unique id..
             whisper_title = request.form['whisper_title']
-            whisper_id = connect_db.add_new_whisper(username, whisper_title, current_timestamp)
+            user_email = session['user_email']
+            whisper_id = connect_db.add_new_whisper(user_email, whisper_title, current_timestamp)
 
             # Generate a uuid that will be used to name files before saving them..
             gen_filename = uuid_generator.hex
@@ -236,7 +237,8 @@ def upload_file():
                 updating_code = connect_db.add_json_status_to_db(whisper_list_string, whisper_id)
                 print "[PI] " + "DEFCON updating code: " + str(updating_code)
                 # Send an email to the researcher that their file is back!
-                _email = connect_db.get_username_from_id(username)
+                _email = connect_db.get_username_from_project_id(whisper_id)
+                print "[EMAIL] about to send to " + str(_email)
                 whisper_finished_notification(whisper_id, _email)
                 return "Success mate!", 200
             else:
@@ -244,7 +246,10 @@ def upload_file():
                 # all the other items in list..
                 # send it to the next person in the matrix..
                 # item_position = existing_whisper_list.index(username)
+
+                # Get current position of username in the list
                 current_position = get_position_on_whisper_list(existing_whisper_list, username)
+                # Based on this position, increment it, and get the next item...
                 next_item = existing_whisper_list[current_position+1]
                 print "[PI] " + "next_item: " + str(next_item.keys()[0])
                 next_item_name = str(next_item.keys()[0])
@@ -254,7 +259,12 @@ def upload_file():
                 print "[PI] Connected Sockets: " + str(shared_module.connected_clients.keys())
                 try:
                     web_socket = shared_module.connected_clients[next_item_name]
-                    web_socket.send(form_contents_json_string)
+                    if not web_socket.closed:
+                        web_socket.send(form_contents_json_string)
+                    else:
+                        new_next_item = existing_whisper_list[current_position+2].keys()[0]
+                        web_socket_2 = shared_module.connected_clients[new_next_item]
+                        web_socket_2.send(form_contents_json_string)
 
                     existing_whisper_list[current_position+1][next_item_name] = "has_received"
                     existing_whisper_list_string = json.dumps(existing_whisper_list)
