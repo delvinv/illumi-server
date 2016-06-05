@@ -40,6 +40,16 @@ def validate_email(email):
     return output
 
 
+def get_username_from_id(user_id):
+    get_users_query = "SELECT user_username FROM BucketList.tbl_user WHERE id='{}'"
+    final_query = get_users_query.format(user_id)
+    cursor.execute(final_query)
+    output = cursor.fetchone()
+    if len(output) > 0:
+        return output[0]
+    return None
+
+
 def get_id_from_project(username, title):
     query_a = "select project_id from BucketList.tbl_projects where title='{}' and user_username='{}'"
     query_b = query_a.format(title, username)

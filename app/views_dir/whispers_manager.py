@@ -22,6 +22,7 @@ def send_async_email(app, msg):
     with app.app_context():
         mail.send(msg)
 
+
 def send_email(subject, sender, recipients, text_body, html_body):
     msg = Message(subject, sender=sender, recipients=recipients)
     msg.body = text_body
@@ -99,23 +100,19 @@ def wow_mail():
     return render_template('error.html')
 
 
-def whisper_finished_notification(whisper_id):
+def whisper_finished_notification(whisper_id, email):
     # TODO: get whisper_name and User's full name based on info we have..
     # PLACEHOLDER..
-    whisper_name = "Awesome Project"
-    user_fullname = "Jen Manuel"
-    user_firstname = "Jen"
-    user_username = "delvin.friends@gmail.com"
     whisper_url = "http://localhost/track"
-    subject_string = "[illumi] '{}', your whisper '{}' has returned!".format(user_firstname, whisper_name)
+    subject_string = "[illumi]Your whisper '{}' has returned!".format(whisper_id)
     send_email(subject_string,
                secret_config.MAIL_USERNAME,
-               [user_username],
+               [email],
                render_template("whisper_completed_email.txt",
-                               user_firstname=user_firstname, whisper_name=whisper_name,
+                               whisper_name=whisper_id,
                                whisper_url=whisper_url),
                render_template("whisper_completed.html",
-                               user_firstname=user_firstname, whisper_name=whisper_name,
+                               whisper_name=whisper_id,
                                whisper_url=whisper_url))
     return "OK"
 
@@ -239,7 +236,8 @@ def upload_file():
                 updating_code = connect_db.add_json_status_to_db(whisper_list_string, whisper_id)
                 print "[PI] " + "DEFCON updating code: " + str(updating_code)
                 # Send an email to the researcher that their file is back!
-                whisper_finished_notification(whisper_id)
+                _email = connect_db.get_username_from_id(username)
+                whisper_finished_notification(whisper_id, _email)
                 return "Success mate!", 200
             else:
                 print "[PI] " + "We have a long way to go.."
@@ -283,6 +281,8 @@ def uploaded_file(filename):
 @app.route('/trackWhisper')
 @app.route('/track')
 def track_whispers():
+    if not session.get('user'):
+        return render_template('error.html', error="Unauthorized access!")
     if session.get('user_email'):
         user_name = session['user_email']
         # Check what projects exist from that author and create links for them..
