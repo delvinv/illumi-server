@@ -4,7 +4,7 @@ from werkzeug import generate_password_hash, check_password_hash
 from .. import connect_db
 
 import logging
-logging.basicConfig(filename='logs/illumi_users.log',level=logging.DEBUG, datefmt='%a, %d %b %Y %H:%M:%S')
+logging.basicConfig(filename='logs/illumi_users.log',level=logging.INFO, datefmt='%a, %d %b %Y %H:%M:%S')
 
 @app.route('/showSignUp')
 def showSignUp():

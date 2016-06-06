@@ -1,5 +1,5 @@
 import logging
-logging.basicConfig(filename='logs/illumi_sockets.log',level=logging.DEBUG, datefmt='%a, %d %b %Y %H:%M:%S')
+logging.basicConfig(filename='logs/illumi_sockets.log',level=logging.INFO, datefmt='%a, %d %b %Y %H:%M:%S')
 from flask import Flask
 from flask_sockets import Sockets
 from app import app

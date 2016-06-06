@@ -6,3 +6,5 @@ flask/*
 flask/
 app/secret_config.py
 app/config.py
+logs/*
+app/static/uploads/*

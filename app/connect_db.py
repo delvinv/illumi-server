@@ -1,5 +1,5 @@
 import logging
-logging.basicConfig(filename='logs/illumi_db.log',level=logging.DEBUG)
+logging.basicConfig(filename='logs/illumi_db.log',level=logging.INFO)
 
 from flask import Flask
 from flask.ext.mysql import MySQL

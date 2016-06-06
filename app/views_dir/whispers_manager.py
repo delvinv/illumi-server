@@ -1,5 +1,5 @@
 import logging
-logging.basicConfig(filename='logs/illumi_whispers.log',level=logging.DEBUG, datefmt='%a, %d %b %Y %H:%M:%S')
+logging.basicConfig(filename='logs/illumi_whispers.log',level=logging.INFO, datefmt='%a, %d %b %Y %H:%M:%S')
 
 from flask import Flask, render_template, request, json, redirect, session, url_for, flash
 from app import app
