@@ -1,3 +1,6 @@
+import logging
+logging.basicConfig(filename='logs/illumi_whispers.log',level=logging.DEBUG)
+
 from flask import Flask, render_template, request, json, redirect, session, url_for, flash
 from app import app
 import os
@@ -66,6 +69,7 @@ def convert_keys_to_json(keys_order):
         json_object.append(inner_dict)
     json_string = json.dumps(json_object)
     print "JSON IS: "+ json_string
+    logging.info("JSON IS: "+ json_string)
     return json_string
 
 
@@ -78,7 +82,7 @@ def save_file_and_return_url(file_sent, file_suffix):
     # Save the files to disk.
     file_sent.save(os.path.join(saving_file))
     print "[STATUS] Files generated: " + str(final_file)
-
+    logging.info("[STATUS] Files generated: " + str(final_file))
     return final_file
 
 
@@ -97,6 +101,7 @@ def wow_mail():
     # a = send_email("Hello World",secret_config.MAIL_USERNAME,['delvin.friends@gmail.com'],"Why not email","<h1>Flask Email</h1>")
     a = whisper_finished_notification("hohohoh")
     print a
+    logging.info(a)
     return render_template('error.html')
 
 
@@ -128,24 +133,31 @@ def get_position_on_whisper_list(whisper_list, username):
 @app.route('/uploadWhisper', methods=['POST', 'GET'])
 def upload_file():
     print "[PI] Connected Sockets: " + str(shared_module.connected_clients.keys())
+    logging.info("[PI] Connected Sockets: " + str(shared_module.connected_clients.keys()))
     print "[" + request.method + "] Request.. "
+    logging.info("[" + request.method + "] Request.. ")
     if request.method == 'POST':
 
         # check if File is present in the POST
         if 'audio_file' not in request.files:
             print "No file part..."
+            logging.info("[WHISPERS] No file part...")
             return redirect('/startWhisper'), 400
         else:
             print "[STATUS] Valid file "
         image_file = request.files['image_file']
         print "[STATUS] Valid image file "
+        logging.info("[STATUS] Valid image file ")
         audio_file = request.files['audio_file']
         print "[STATUS] Valid audio "
+        logging.info("[STATUS] Valid audio ")
         username = request.form['username']
         print "[STATUS] Valid username"
+        logging.info("[STATUS] Valid username")
         # if user has not selected file, browser will also submit an empty part without filename.
         if image_file.filename == '' or audio_file.filename == '':
             print "No file selected bro....."
+            logging.error("No file selected.....")
             flash('No selected file')
             return redirect(request.url), 400
 
@@ -156,6 +168,7 @@ def upload_file():
         # check if username is a researcher or participant...
         if 'user' in session:
             print "[STATUS] User is logged in..."
+            logging.info("[STATUS] User is logged in...")
             # Set the whisper_id by adding it to the database and retrieving a unique id..
             whisper_title = request.form['whisper_title']
             user_email = session['user_email']
@@ -178,23 +191,29 @@ def upload_file():
                 # post this shuffled order to the database...
                 op_output = connect_db.add_json_status_to_db(keys_json_string, whisper_id)
                 print "DB operation for storing shuffle was: " + str(op_output)
+                logging.info("DB operation for storing shuffle was: " + str(op_output))
 
                 next_item = shuffled_list[0]
                 web_socket = shared_module.connected_clients[next_item]
                 web_socket.send(form_contents_json_string)
                 print "Did you see the printer tremble?"
                 print form_contents_json_string
+                logging.info("Did you see the printer tremble?")
+                logging.info(form_contents_json_string)
                 return render_template('success.html'), 200
         # TODO: now push it to the firs person in the matrix....
         else:
             # Request is from a Pi so we need to get the whisper_id for which the Pi has sent a request to the server..
             whisper_id = request.form['whisper_id']
             print "[PI] " + "Received request from whisper: " + str(whisper_id)
+            logging.info("[PI] " + "Received request from whisper: " + str(whisper_id))
             whisper_list = connect_db.get_json_status_from_db(whisper_id)
             print "[PI] " + str(whisper_list) + ", type: " + str(type(whisper_list))
+            logging.info("[PI] " + str(whisper_list) + ", type: " + str(type(whisper_list)))
             existing_whisper_list = json.loads(str(whisper_list))
             print "[PI] " + str(existing_whisper_list)  + ", type: " + str(type(existing_whisper_list))
-            print "[PI] " + "Before the loop"
+            logging.info("[PI] " + str(existing_whisper_list)  + ", type: " + str(type(existing_whisper_list)))
+
             # if this Pi has already sent us files for this project, we can stop further processing..
             # TODO: Fix this.. Check if a) user is a valid one, b) user hasnt already sent us a file!
             bool_pi_found_in_list = False
@@ -203,13 +222,16 @@ def upload_file():
                     bool_pi_found_in_list = True
                     if item[username]== "has_sent":
                         print "[PI] " + "This Pi has already sent us files.."
+                        logging.info("[PI] " + "This Pi has already sent us files..")
                         return "Already received files from this Pi", 400
                     else:
                         print "[PI] " + "no files from " + str(item)
+                        logging.info("[PI] " + "no files from " + str(item))
             if not bool_pi_found_in_list:
                 print "[PI] " + "Naughty Pi! Not meant to be sending us files!"
+                logging.info("[PI] " + "Naughty Pi! Not meant to be sending us files!")
                 return "Pi is not on list whisper receivers.", 400
-            print "[PI] " + "After the loop"
+
             # if existing_whisper_list(username) == "has_sent":
             #     print "[PI] " + "This Pi has already sent us files.."
             #     return render_template("error.html"), 400
@@ -221,6 +243,7 @@ def upload_file():
             connect_db.add_file_details_to_db(form_audio_url,whisper_id,"audio",username,current_timestamp)
             connect_db.add_file_details_to_db(form_image_url,whisper_id,"image",username,current_timestamp)
             print "[PI] " + "Files saved to DB and disk e.g. ("+str(form_image_url) + ")"
+            logging.info("[PI] " + "Files saved to DB and disk e.g. ("+str(form_image_url) + ")")
 
             form_contents_json_string = generate_form_contents_json(form_audio_url, form_image_url, whisper_id)
 
@@ -230,19 +253,23 @@ def upload_file():
             # TODO: send out the image and audio links using websockets to next APPROPRIATE link in the matrix..
 
             if username in existing_whisper_list[-1]:
-                print "[PI] " + "Last Pi on the list! Exciting.."
+                print "[PI] " + "Final PI"
+                logging.info("[PI] " + "Final PI")
                 # last item in list.. send images back to SERVER
                 existing_whisper_list[-1][username] = "has_sent"
                 whisper_list_string = json.dumps(existing_whisper_list)
                 updating_code = connect_db.add_json_status_to_db(whisper_list_string, whisper_id)
                 print "[PI] " + "DEFCON updating code: " + str(updating_code)
+                logging.info("[PI] " + "DEFCON updating code: " + str(updating_code))
                 # Send an email to the researcher that their file is back!
                 _email = connect_db.get_username_from_project_id(whisper_id)
                 print "[EMAIL] about to send to " + str(_email)
+                logging.info("[EMAIL] about to send to " + str(_email))
                 whisper_finished_notification(whisper_id, _email)
                 return "Success mate!", 200
             else:
                 print "[PI] " + "We have a long way to go.."
+                logging.info("[PI] " + "We have a long way to go..")
                 # all the other items in list..
                 # send it to the next person in the matrix..
                 # item_position = existing_whisper_list.index(username)
@@ -252,11 +279,13 @@ def upload_file():
                 # Based on this position, increment it, and get the next item...
                 next_item = existing_whisper_list[current_position+1]
                 print "[PI] " + "next_item: " + str(next_item.keys()[0])
+                logging.info("[PI] " + "next_item: " + str(next_item.keys()[0]))
                 next_item_name = str(next_item.keys()[0])
                 existing_whisper_list[current_position][username] = "has_sent"
                 whisper_list_stringified = json.dumps(existing_whisper_list)
                 connect_db.add_json_status_to_db(whisper_list_stringified, whisper_id)
                 print "[PI] Connected Sockets: " + str(shared_module.connected_clients.keys())
+                logging.info("[PI] Connected Sockets: " + str(shared_module.connected_clients.keys()))
                 try:
                     web_socket = shared_module.connected_clients[next_item_name]
                     if not web_socket.closed:
@@ -274,6 +303,7 @@ def upload_file():
                     return "Great success.", 200
                 except KeyError, k:
                     print "[DB] " + "Websocket KeyError: No socket with name " + next_item_name + " exists."
+                    logging.info("[DB] " + "Websocket KeyError: No socket with name " + next_item_name + " exists.")
                     existing_whisper_list[current_position+1][next_item_name] = "failed_receive"
                     existing_whisper_list_string = json.dumps(existing_whisper_list)
                     connect_db.add_json_status_to_db(existing_whisper_list_string, whisper_id)
@@ -304,11 +334,13 @@ def track_whispers():
         for item in media_collection:
             print item
             print "ITEM IS: " + str(item["audio_filenames"][0][0])
+            logging.info("ITEM IS: " + str(item["audio_filenames"][0][0]))
             audio_filenames_list.append(str(item["audio_filenames"][0][0]))
             image_filenames_list.append(str(item["image_filenames"][0][0]))
             project_names_list.append(str(item["project_name"]))
         # Generate all the projects and links on a single page..
         print audio_filenames_list
+        logging.info(audio_filenames_list)
         return render_template('track_whisper.html',
                                audio_filenames_list=audio_filenames_list,
                                project_names_list=project_names_list,

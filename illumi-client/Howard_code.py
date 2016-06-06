@@ -5,7 +5,7 @@ import sys
 
 print "Username is: " + str(sys.argv[1])
 PI_USERNAME = str(sys.argv[1])
-SOCKET_CONNECTION_URL = "ws://localhost:4000/echo"
+SOCKET_CONNECTION_URL = "ws://gooseberry:5000/echo"
 ws = create_connection(SOCKET_CONNECTION_URL)
 
 
@@ -14,7 +14,7 @@ ws = create_connection(SOCKET_CONNECTION_URL)
 def PostRequest(whisper_id):
     files = {'image_file' : open("image.jpg", 'rb'), 'audio_file' : open('audio.wav', 'rb')}
     piid = {'whisper_id': whisper_id, 'username': PI_USERNAME}
-    url = 'http://localhost:4000/uploadWhisper'
+    url = 'http://gooseberry/uploadWhisper'
     # print "[SOCKET]: " + "sending files using http.."
     r = requests.post(url, data=piid, files=files)
     print r.status_code
@@ -49,7 +49,7 @@ def ServerWait():
             ws = create_connection(SOCKET_CONNECTION_URL)
             ws.send(message_str)
             print("[SOCKET] " + PI_USERNAME + " connection restablished...")
-
+    #
 
     # Now wait till you receive a message from the server (using a while loop).
     # The message will be a string but it contains JSON data:

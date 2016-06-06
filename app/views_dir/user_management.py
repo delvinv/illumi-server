@@ -3,6 +3,9 @@ from app import app
 from werkzeug import generate_password_hash, check_password_hash
 from .. import connect_db
 
+import logging
+logging.basicConfig(filename='logs/illumi_users.log',level=logging.DEBUG)
+
 @app.route('/showSignUp')
 def showSignUp():
     return render_template('signup.html')
@@ -37,7 +40,6 @@ def signUp():
 @app.route('/showSignIn', methods=['POST', 'GET'])
 @app.route('/signIn', methods=['POST', 'GET'])
 def signIn():
-    print "Hello world"
     # All done inside the form
     if request.method == "POST":
         # TODO: validate input

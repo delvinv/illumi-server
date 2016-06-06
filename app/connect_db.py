@@ -1,3 +1,6 @@
+import logging
+logging.basicConfig(filename='logs/illumi_db.log',level=logging.DEBUG)
+
 from flask import Flask
 from flask.ext.mysql import MySQL
 import config
@@ -17,13 +20,15 @@ conn.autocommit(True)
 
 cursor = conn.cursor()
 print "[DB] " + "---Successfully connected to DB---"
-
+logging.info("[DB] " + "---Successfully connected to DB---")
 
 def signup_to_database(username, email, password):
     insert_query = "INSERT INTO BucketList.tbl_user(user_name, user_username, user_password) VALUES('{}','{}','{}')"
     final_query = insert_query.format(username, email, password)
     print "[DB] " + "Password is: " + password
+    logging.info( "[DB] " + "Password is: " + password)
     print "[DB] " + "Query: " + final_query
+    logging.info("[DB] " + "Query: " + final_query)
     cursor.execute(final_query)
     output = cursor.fetchall()
     return output
@@ -36,7 +41,9 @@ def validate_email(email):
     output = cursor.fetchall()
     if len(output) > 0:
         print "[DB] " + "Login SQL has output"
+        logging.info("[DB] " + "Login SQL has output")
     print "[DB] " + str(output)
+    logging.info("[DB] " + str(output))
     return output
 
 
@@ -56,6 +63,7 @@ def get_id_from_project(username, title):
     cursor.execute(query_b)
     output = cursor.fetchone()
     print "[DB] " + str(output[0])
+    logging.info("[DB] " + str(output[0]))
     return output[0]
 
 
@@ -66,11 +74,14 @@ def add_new_whisper(username, title, current_timestamp):
         cursor.execute(query_1)
         conn.commit()
         print "[DB] " + str(username) + " inserted successfully.."
+        logging.info("[DB] " + str(username) + " inserted successfully..")
         return get_id_from_project(username, title)
     except MySQLdb.IntegrityError, e:
         print "[DB] " + "Not done " + str(e.args)
+        logging.error("[DB] " + "Not done " + str(e.args))
         conn.rollback()
         print "[DB] " + e.message
+        logging.error("[DB] " + e.message)
         return None
 
 
@@ -83,11 +94,14 @@ def add_file_details_to_db(filename, project_id, media_type, username, current_t
         cursor.execute(final_query)
         conn.commit()
         print "[DB] " + str(username) + " inserted successfully.."
+        logging.info("[DB] " + str(username) + " inserted successfully..")
         return True
     except MySQLdb.IntegrityError, e:
         print "Not done " + str(e.args)
+        logging.error("Not done " + str(e.args))
         conn.rollback()
         print "[DB] " + e.message
+        logging.error("[DB] " + e.message)
         return False
 
 
@@ -99,11 +113,14 @@ def add_json_status_to_db(json_object, project_id):
         cursor.execute(final_query)
         conn.commit()
         print "[DB] " + str(json_object) + " inserted successfully.."
+        logging.info("[DB] " + str(json_object) + " inserted successfully..")
         return True
     except MySQLdb.IntegrityError, e:
         print "[DB] " + "Not done " + str(e.args)
+        logging.error("[DB] " + "Not done " + str(e.args))
         conn.rollback()
         print e.message
+        logging.error(e.message)
         return False
 
 
@@ -115,13 +132,15 @@ def get_json_status_from_db(project_id):
         conn.commit()
         output = cursor.fetchone()
         print "[DB] " + str(project_id) + " retrieved successfully.."
+        logging.info("[DB] " + str(project_id) + " retrieved successfully..")
         return output[0]
     except MySQLdb.IntegrityError, e:
         print "[DB] " + "Not retrieved " + str(e.args)
+        logging.error("[DB] " + "Not retrieved " + str(e.args))
         conn.rollback()
         print e.message
+        logging.error(e.message)
         return None
-
 
 
 def get_media_from_db(project_id, media_type):
@@ -132,11 +151,14 @@ def get_media_from_db(project_id, media_type):
         conn.commit()
         output = cursor.fetchall()
         print "[DB] " + str(project_id) + " retrieved successfully.."
+        logging.info("[DB] " + str(project_id) + " retrieved successfully..")
         return output
     except MySQLdb.IntegrityError, e:
         print "[DB] " + "Not retrieved.. " + str(e.args)
+        logging.error("[DB] " + "Not retrieved.. " + str(e.args))
         conn.rollback()
         print e.message
+        logging.error(e.message)
         return None
 
 
@@ -148,9 +170,11 @@ def get_projects_from_db(user_username):
         conn.commit()
         output = cursor.fetchall()
         print "[DB] " + str(user_username) + " retrieved successfully.."
+        logging.info("[DB] " + str(user_username) + " retrieved successfully..")
         return output
     except MySQLdb.IntegrityError, e:
         print "[DB] " + "Not retrieved.. " + str(e.args)
+        logging.error("[DB] " + "Not retrieved.. " + str(e.args))
         conn.rollback()
         print e.message
         return None
@@ -171,6 +195,7 @@ def get_media_for_username(username):
             project_media.append(project_single)
     except Exception, e:
         print "[DB] error " +e.message
+        logging.error("[DB] error " +e.message)
     return project_media
 
 if __name__ == '__main__':
