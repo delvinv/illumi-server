@@ -290,10 +290,19 @@ def upload_file():
                     web_socket = shared_module.connected_clients[next_item_name]
                     if not web_socket.closed:
                         web_socket.send(form_contents_json_string)
+                        print "[PI] Success sending to " + next_item_name
+                        logging.info("[PI] Success sending to " + next_item_name)
                     else:
+                        print "[PI] Failed sending to " + next_item_name
+                        logging.info("[PI] Failed sending to " + next_item_name)
                         new_next_item = existing_whisper_list[current_position+2].keys()[0]
+                        print "Retrying with next PI on list.. " + str(new_next_item)
+                        logging.info("Retrying with next PI on list.. " + str(new_next_item))
+
                         web_socket_2 = shared_module.connected_clients[new_next_item]
                         web_socket_2.send(form_contents_json_string)
+
+                        print "[PI] Re-success sending to " + str(new_next_item)
 
                     existing_whisper_list[current_position+1][next_item_name] = "has_received"
                     existing_whisper_list_string = json.dumps(existing_whisper_list)
