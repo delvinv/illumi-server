@@ -15,7 +15,8 @@
         <h3> {{ entry }} </h3>
         <p> Images: </p>
 {#        {% for current_image in image_filenames_list %}#}
-        <img src="{{ url_for('static',filename='uploads/') }}{{ image_filenames_list[loop.index - 1] }}" alt="{{ entry }}" style="max-width: 100%">
+{#        {{ url_for('static',filename='uploads/') }}#}
+        <img src="{{ image_filenames_list[loop.index - 1] }}" alt="{{ entry }}" style="max-width: 100%">
 {#        {% endfor %}#}
         <p> Audio: </p>
 {#        {% for current_audio in audio_filenames_list %}#}
