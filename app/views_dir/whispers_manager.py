@@ -321,12 +321,15 @@ def track_whispers():
         image_filenames_list = []
         whisper_names_list = []
         for item in media_collection:
-            print item
-            print "ITEM IS: " + str(item["audio_filenames"][0][0])
-            logging.info("ITEM IS: " + str(item["audio_filenames"][0][0]))
-            audio_filenames_list.append(str(item["audio_filenames"][0][0]))
-            image_filenames_list.append(str(item["image_filenames"][0][0]))
-            whisper_names_list.append(str(item["whisper_name"]))
+            try:
+                print item
+                print "ITEM IS: " + str(item["audio_filenames"][0][0])
+                logging.info("ITEM IS: " + str(item["audio_filenames"][0][0]))
+                audio_filenames_list.append(str(item["audio_filenames"][0][0]))
+                image_filenames_list.append(str(item["image_filenames"][0][0]))
+                whisper_names_list.append(str(item["whisper_name"]))
+            except Exception, e:
+                print "[WHISPERS] Exception.. \n" + str(e.message)
         # Generate all the whispers and links on a single page..
         print audio_filenames_list
         logging.info(audio_filenames_list)
