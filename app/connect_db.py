@@ -20,7 +20,10 @@ conn.autocommit(True)
 
 cursor = conn.cursor()
 print "[DB] " + "---Successfully connected to DB---"
-logging.info("[DB] " + "---Successfully connected to DB---")
+logging.info("\n")
+logging.info("[DB] " + "\t\t---Successfully connected to DB---\t\t [DB]")
+logging.info("\n")
+logging.info("\n")
 
 def signup_to_database(username, email, password):
     insert_query = "INSERT INTO BucketList.tbl_user(user_name, user_username, user_password) VALUES('{}','{}','{}')"

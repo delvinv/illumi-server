@@ -36,7 +36,7 @@ def send_email(subject, sender, recipients, text_body, html_body):
 import uuid
 uuid_generator = uuid.uuid4()
 
-WEB_URL = "http://192.168.1.149/"
+WEB_URL = "http://52.40.252.108/"
 UPLOAD_FOLDER = 'app/static/uploads/'
 SHOW_UPLOAD_FOLDER = 'uploads/'
 
@@ -108,7 +108,7 @@ def wow_mail():
 def whisper_finished_notification(whisper_id, email):
     # TODO: get whisper_name and User's full name based on info we have..
     # PLACEHOLDER..
-    whisper_url = "http://localhost/track"
+    whisper_url = "http://illumi.delv.in/track"
     subject_string = "[illumi]Your whisper '{}' has returned!".format(whisper_id)
     send_email(subject_string,
                secret_config.MAIL_USERNAME,
