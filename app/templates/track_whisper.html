@@ -11,7 +11,7 @@
 {% block main_heading %} Track Whisper {% endblock %}
 
 {% block main_content %}
-    {% for entry in project_names_list %}
+    {% for entry in whisper_names_list %}
         <h3> {{ entry }} </h3>
         <p> Images: </p>
 {#        {% for current_image in image_filenames_list %}#}
@@ -20,7 +20,7 @@
         <p> Audio: </p>
 {#        {% for current_audio in audio_filenames_list %}#}
             <audio controls>
-                <source src="{{ url_for('static',filename='uploads/') }}{{ audio_filenames_list[loop.index - 1] }}" type="audio/wav">
+                <source src="{{ url_for('static',filename='uploads/') }}{{ audio_filenames_list[loop.index - 1] }}" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
 {#        {% endfor %}#}

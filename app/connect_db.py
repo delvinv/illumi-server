@@ -25,6 +25,7 @@ logging.info("[DB] " + "\t\t---Successfully connected to DB---\t\t [DB]")
 logging.info("\n")
 logging.info("\n")
 
+
 def signup_to_database(username, email, password):
     insert_query = "INSERT INTO BucketList.tbl_user(user_name, user_username, user_password) VALUES('{}','{}','{}')"
     final_query = insert_query.format(username, email, password)
@@ -50,9 +51,9 @@ def validate_email(email):
     return output
 
 
-def get_username_from_project_id(project_id):
-    get_users_query = "SELECT user_username FROM BucketList.tbl_projects WHERE project_id='{}'"
-    final_query = get_users_query.format(project_id)
+def get_username_from_whisper_id(whisper_id):
+    get_users_query = "SELECT user_username FROM BucketList.tbl_projects WHERE whisper_id='{}'"
+    final_query = get_users_query.format(whisper_id)
     cursor.execute(final_query)
     output = cursor.fetchone()
     if len(output) > 0:
@@ -60,7 +61,7 @@ def get_username_from_project_id(project_id):
     return None
 
 
-def get_id_from_project(username, title):
+def get_id_from_whisper(username, title):
     query_a = "select project_id from BucketList.tbl_projects where title='{}' and user_username='{}'"
     query_b = query_a.format(title, username)
     cursor.execute(query_b)
@@ -78,7 +79,7 @@ def add_new_whisper(username, title, current_timestamp):
         conn.commit()
         print "[DB] " + str(username) + " inserted successfully.."
         logging.info("[DB] " + str(username) + " inserted successfully..")
-        return get_id_from_project(username, title)
+        return get_id_from_whisper(username, title)
     except MySQLdb.IntegrityError, e:
         print "[DB] " + "Not done " + str(e.args)
         logging.error("[DB] " + "Not done " + str(e.args))
@@ -89,9 +90,9 @@ def add_new_whisper(username, title, current_timestamp):
 
 
 # TODO: currently a copy of above method, make it more relevant..
-def add_file_details_to_db(filename, project_id, media_type, username, current_timestamp):
-    get_users_query = "INSERT INTO BucketList.tbl_media(filename, project_id, media_type, user_username, origin_date) VALUES('{}','{}','{}','{}', '{}') "
-    final_query = get_users_query.format(filename, project_id, media_type, username, current_timestamp)
+def add_file_details_to_db(filename, whisper_id, media_type, username, current_timestamp):
+    get_users_query = "INSERT INTO BucketList.tbl_media(filename, whisper_id, media_type, user_username, origin_date) VALUES('{}','{}','{}','{}', '{}') "
+    final_query = get_users_query.format(filename, whisper_id, media_type, username, current_timestamp)
 
     try:
         cursor.execute(final_query)
@@ -108,9 +109,9 @@ def add_file_details_to_db(filename, project_id, media_type, username, current_t
         return False
 
 
-def add_json_status_to_db(json_object, project_id):
-    query = "UPDATE BucketList.tbl_projects SET status='{}' WHERE project_id='{}'"
-    final_query = query.format(json_object, project_id)
+def add_json_status_to_db(json_object, whisper_id):
+    query = "UPDATE BucketList.tbl_projects SET status='{}' WHERE whisper_id='{}'"
+    final_query = query.format(json_object, whisper_id)
 
     try:
         cursor.execute(final_query)
@@ -127,15 +128,15 @@ def add_json_status_to_db(json_object, project_id):
         return False
 
 
-def get_json_status_from_db(project_id):
-    query = "SELECT status FROM BucketList.tbl_projects WHERE project_id= '{}'"
-    final_query = query.format(project_id)
+def get_json_status_from_db(whisper_id):
+    query = "SELECT status FROM BucketList.tbl_projects WHERE whisper_id= '{}'"
+    final_query = query.format(whisper_id)
     try:
         cursor.execute(final_query)
         conn.commit()
         output = cursor.fetchone()
-        print "[DB] " + str(project_id) + " retrieved successfully.."
-        logging.info("[DB] " + str(project_id) + " retrieved successfully..")
+        print "[DB] " + str(whisper_id) + " retrieved successfully.."
+        logging.info("[DB] " + str(whisper_id) + " retrieved successfully..")
         return output[0]
     except MySQLdb.IntegrityError, e:
         print "[DB] " + "Not retrieved " + str(e.args)
@@ -146,15 +147,15 @@ def get_json_status_from_db(project_id):
         return None
 
 
-def get_media_from_db(project_id, media_type):
-    query = "SELECT filename FROM BucketList.tbl_media WHERE project_id= '{}' AND media_type='{}' ORDER BY media_type ASC, origin_date ASC"
-    final_query = query.format(project_id, media_type)
+def get_media_from_db(whisper_id, media_type):
+    query = "SELECT filename FROM BucketList.tbl_media WHERE whisper_id= '{}' AND media_type='{}' ORDER BY media_type ASC, origin_date ASC"
+    final_query = query.format(whisper_id, media_type)
     try:
         cursor.execute(final_query)
         conn.commit()
         output = cursor.fetchall()
-        print "[DB] " + str(project_id) + " retrieved successfully.."
-        logging.info("[DB] " + str(project_id) + " retrieved successfully..")
+        print "[DB] " + str(whisper_id) + " retrieved successfully.."
+        logging.info("[DB] " + str(whisper_id) + " retrieved successfully..")
         return output
     except MySQLdb.IntegrityError, e:
         print "[DB] " + "Not retrieved.. " + str(e.args)
@@ -165,7 +166,7 @@ def get_media_from_db(project_id, media_type):
         return None
 
 
-def get_projects_from_db(user_username):
+def get_whispers_from_db(user_username):
     query = "SELECT * FROM BucketList.tbl_projects WHERE user_username= '{}'"
     final_query = query.format(user_username)
     try:
@@ -185,21 +186,21 @@ def get_projects_from_db(user_username):
 
 def get_media_for_username(username):
     try:
-        projects_list = get_projects_from_db(username)
-        project_media = []
-        for project in projects_list:
-            project_id = project[0]
-            project_name = project[2]
+        whisper_list = get_whispers_from_db(username)
+        whisper_media_list = []
+        for whisper in whisper_list:
+            whisper_id = whisper[0]
+            whisper_name = whisper[2]
 
-            audio_filenames = get_media_from_db(project_id, "audio")
-            image_filenames = get_media_from_db(project_id, "image")
+            audio_filenames = get_media_from_db(whisper_id, "audio")
+            image_filenames = get_media_from_db(whisper_id, "image")
 
-            project_single = {"project_name": project_name, "audio_filenames": audio_filenames, "image_filenames": image_filenames}
-            project_media.append(project_single)
+            whisper_single = {"whisper_name": whisper_name, "audio_filenames": audio_filenames, "image_filenames": image_filenames}
+            whisper_media_list.append(whisper_single)
     except Exception, e:
         print "[DB] error " +e.message
         logging.error("[DB] error " +e.message)
-    return project_media
+    return whisper_media_list
 
 if __name__ == '__main__':
     current_timestamp = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
