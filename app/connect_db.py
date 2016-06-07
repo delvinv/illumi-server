@@ -62,7 +62,7 @@ def get_username_from_whisper_id(whisper_id):
 
 
 def get_id_from_whisper(username, title):
-    query_a = "select project_id from BucketList.tbl_projects where title='{}' and user_username='{}'"
+    query_a = "select whisper_id from BucketList.tbl_projects where title='{}' and user_username='{}'"
     query_b = query_a.format(title, username)
     cursor.execute(query_b)
     output = cursor.fetchone()
