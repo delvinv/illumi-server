@@ -13,9 +13,9 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 @app.route('/startWhisper')
 def startWhisper():
     if session.get('user'):
-        return render_template('start_whisper.html')
+        return render_template('old/start_whisper.html')
     else:
-        return render_template('error.html', error="Unauthorized access!")
+        return render_template('old/error.html', error="Unauthorized access!")
 
 
 def allowed_file(filename):

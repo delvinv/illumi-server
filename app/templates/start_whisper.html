@@ -1,0 +1,74 @@
+{% extends "base_layout.html" %}
+{% block body_main_block %}
+
+	<header id="head" class="secondary"></header>
+
+	<!-- container -->
+	<div class="container">
+
+		<ol class="breadcrumb">
+			<li><a href="index.html">Home</a></li>
+			<li class="active">Start Illumi</li>
+		</ol>
+
+		<div class="row">
+			
+			<!-- Article main content -->
+			<article class="col-sm-9 maincontent">
+				<header class="page-header">
+					<h1 class="page-title">Start an ILLUMI</h1>
+				</header>
+				
+				<p>Hi Researcher!<br><br>This is where you can set up a new ILLUMI to send off to older citizens. The initial ILLUMI will be sent to one participant and, using the concept of Chinese Whispers, it will be sent around a chain until it's finally returned to you! <br><br>When the chain is complete, you'll recieve an email. But you'll be able to track your ILLUMI too!</p>
+				<ul>
+				<li>Do you want to improve your research?</li>
+				<li>Do you want to improve how you communicate your research to others?</li>
+				<li>Do you think your idea can make an impact? </li>
+				</ul><br>
+				<p>Why not begin with putting your voice through our system first and see what the public think of your idea!</p><br>
+                <p>Upload a voice recording of your research idea and an image file that summarises or supplements your idea. We will send it out to our select group of randomly chosen participants, and gather their thoughts for you.</p>
+				<br>
+					<form method="POST" action="/uploadWhisper" enctype="multipart/form-data">
+						<div class="row">
+							<div class="col-sm-4">
+								<input type="name" name="whisper_title" id="whisper_title" class="form-control" placeholder="Whisper Title" required autofocus>
+                                <input type="name" name="username" id="username" style="display: none" value="{{ session['user'] }}">
+							</div>
+							<div class="col-sm-4">
+								<input type="file" placeholder="Audio File" accept="audio/*" name="audio_file" id="audio_file" class="form-control" required autofocus>
+							</div>
+							<div class="col-sm-4">
+								<input type="file" accept="image/*" name="image_file" id="image_file" class="form-control" placeholder="Image File" required autofocus>
+							</div>
+						</div>
+						<br>
+						<br>
+						<div class="row">
+{#							<div class="col-sm-6">#}
+{#								<label class="checkbox"></label>#}
+{#							</div>#}
+							<div class="col-sm-6 text-center">
+								<input class="btn btn-action" type="submit" value="Upload Illumi">
+							</div>
+						</div>
+					</form>
+
+			</article>
+			<!-- /Article -->
+			
+			<!-- Sidebar -->
+			<aside class="col-sm-3 sidebar sidebar-right">
+
+				<div class="widget">
+					<h4>Questions or Problems?</h4>
+					<p> If you have any questions or you're experiencing problems with the site or digital book, please contact:<br><br>Delvin Varghese<br>Open Lab, Newcastle University</p>
+					<a href="mailto:d.varghese2 [at] newcastle [dot] ac (.) uk">d.varghese2 @ newcastle.ac.uk</a>
+				</div>
+
+			</aside>
+			<!-- /Sidebar -->
+
+		</div>
+	</div>	<!-- /container -->
+
+{% endblock %}

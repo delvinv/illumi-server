@@ -28,20 +28,20 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 @app.route('/main')
 def index():
     if session.get('user'):
-        return render_template('userHome.html')
+        return render_template('old/userHome.html')
     else:
         print "Hello world in views.py"
-        return render_template('index.html', title='Home')
+        return render_template('old/index.html', title='Home')
 
 
 @app.route('/userHome')
 def userHome():
     if session.get('user'):
-        return render_template('userHome.html')
+        return render_template('old/userHome.html')
     else:
-        return render_template('error.html', error="Unauthorized access!")
+        return render_template('old/error.html', error="Unauthorized access!")
 
 
 @app.route('/error')
 def error_page(error_message):
-    return render_template('error.html', error=error_message)
+    return render_template('old/error.html', error=error_message)

@@ -23,9 +23,9 @@ PUBLIC_UPLOAD_FOLDER = 'uploads/'
 @app.route('/startWhisper')
 def startWhisper():
     if session.get('user'):
-        return render_template('start_whisper.html')
+        return render_template('old/start_whisper.html')
     else:
-        return render_template('error.html', error="Unauthorized access!")
+        return render_template('old/error.html', error="Unauthorized access!")
 
 
 # We need to find what devices are available and shuffle them each time a new whisper is started!
@@ -81,7 +81,7 @@ def wow_mail():
     a = email_sending.whisper_finished_notification("hohohoh")
     print a
     logging.info(a)
-    return render_template('error.html')
+    return render_template('old/error.html')
 
 
 def get_position_on_whisper_list(whisper_list, username):
@@ -235,9 +235,9 @@ def upload_whisper_form():
         if 'user' in session:
             op_output_success = handle_researcher_upload(username, image_file, audio_file)
             if op_output_success:
-                return render_template('success.html'), 200
+                return render_template('old/success.html'), 200
             else:
-                return render_template('error.html'), 400
+                return render_template('old/error.html'), 400
         else:
             # Request is from a Pi so we need to get the whisper_id for which the Pi has sent a request to the server..
             whisper_id = request.form['whisper_id']
@@ -298,7 +298,7 @@ def upload_whisper_form():
                 else:
                     return "Next socket not found.", 400
         return redirect(url_for('track_whispers')), 200
-    return render_template('userHome.html'), 400
+    return render_template('old/userHome.html'), 400
 
 
 @app.route('/uploads/<filename>')
@@ -311,7 +311,7 @@ def uploaded_file(filename):
 @app.route('/track')
 def track_whispers():
     if not session.get('user'):
-        return render_template('error.html', error="Unauthorized access!")
+        return render_template('old/error.html', error="Unauthorized access!")
     if session.get('user_email'):
         user_name = session['user_email']
         # Check what whispers exist from that author and create links for them..
@@ -333,12 +333,12 @@ def track_whispers():
         # Generate all the whispers and links on a single page..
         print audio_filenames_list
         logging.info(audio_filenames_list)
-        return render_template('track_whisper.html',
+        return render_template('old/track_whisper.html',
                                audio_filenames_list=audio_filenames_list,
                                whisper_names_list=whisper_names_list,
                                image_filenames_list=image_filenames_list)
     else:
-        return render_template('error.html', error="Unauthorized access!")
+        return render_template('old/error.html', error="Unauthorized access!")
 
 
 # Backup method if websockets doesnt work for server to pi connection..
@@ -351,4 +351,4 @@ def check_whispers():
         # Convert json into strings..
         # Send json as a response using make_response and return it here..
     else:
-        return render_template("error.html")
+        return render_template("old/error.html")

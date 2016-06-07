@@ -15,6 +15,7 @@ def send_async_email(app, msg):
         mail.send(msg)
 
 
+# We want to initiate the email sending process in a thread so that it does not block..
 def send_email(subject, sender, recipients, text_body, html_body):
     msg = Message(subject, sender=sender, recipients=recipients)
     msg.body = text_body
@@ -23,6 +24,7 @@ def send_email(subject, sender, recipients, text_body, html_body):
     thr.start()
 
 
+# This is how we send an email to the email associated with the whisper..
 def whisper_finished_notification(whisper_id, email):
     # TODO: get whisper_name and User's full name based on info we have..
     # PLACEHOLDER..

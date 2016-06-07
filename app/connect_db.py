@@ -9,6 +9,7 @@ import MySQLdb
 app = Flask(__name__)
 mysql = MySQL()
 
+# Retrieve the connection settings from the config.py file..
 app.config['MYSQL_DATABASE_USER'] = config.my_username
 app.config['MYSQL_DATABASE_PASSWORD'] = config.my_password
 app.config['MYSQL_DATABASE_DB'] = config.my_db
@@ -26,6 +27,7 @@ logging.info("\n")
 logging.info("\n")
 
 
+# Signing up to the main database BucketList..
 def signup_to_database(username, email, password):
     insert_query = "INSERT INTO BucketList.tbl_user(user_name, user_username, user_password) VALUES('{}','{}','{}')"
     final_query = insert_query.format(username, email, password)
@@ -38,6 +40,7 @@ def signup_to_database(username, email, password):
     return output
 
 
+# Check whether email is valid, before proceeding with login...
 def validate_email(email):
     get_users_query = "SELECT * FROM BucketList.tbl_user WHERE user_username='{}'"
     final_query = get_users_query.format(email)
@@ -51,6 +54,7 @@ def validate_email(email):
     return output
 
 
+# Get the username associated with a given whisper_id
 def get_username_from_whisper_id(whisper_id):
     get_users_query = "SELECT user_username FROM BucketList.tbl_projects WHERE whisper_id='{}'"
     final_query = get_users_query.format(whisper_id)
@@ -61,6 +65,7 @@ def get_username_from_whisper_id(whisper_id):
     return None
 
 
+# Get the whisper_id from a project's title
 def get_id_from_whisper(username, title):
     query_a = "select whisper_id from BucketList.tbl_projects where title='{}' and user_username='{}'"
     query_b = query_a.format(title, username)
@@ -71,6 +76,7 @@ def get_id_from_whisper(username, title):
     return output[0]
 
 
+# Adding a new whisper from a user/researcher to the database..
 def add_new_whisper(username, title, current_timestamp):
     query = "INSERT INTO BucketList.tbl_projects(user_username, title, origin_date, status) VALUES('{}', '{}', '{}', 'inactive')"
     query_1 = query.format(username, title, current_timestamp)
@@ -89,7 +95,7 @@ def add_new_whisper(username, title, current_timestamp):
         return None
 
 
-# TODO: currently a copy of above method, make it more relevant..
+# Adding image/audio files to the db using this method...
 def add_file_details_to_db(filename, whisper_id, media_type, username, current_timestamp):
     get_users_query = "INSERT INTO BucketList.tbl_media(filename, whisper_id, media_type, user_username, origin_date) VALUES('{}','{}','{}','{}', '{}') "
     final_query = get_users_query.format(filename, whisper_id, media_type, username, current_timestamp)
@@ -109,6 +115,8 @@ def add_file_details_to_db(filename, whisper_id, media_type, username, current_t
         return False
 
 
+# The JSON structure maintains who is next in the whisper/illumi chain
+# We set the JSOn according to the successs status of sending to the previous PI..
 def add_json_status_to_db(json_object, whisper_id):
     query = "UPDATE BucketList.tbl_projects SET status='{}' WHERE whisper_id='{}'"
     final_query = query.format(json_object, whisper_id)
@@ -128,6 +136,7 @@ def add_json_status_to_db(json_object, whisper_id):
         return False
 
 
+# Retrieve the JSON status of a client from the database..
 def get_json_status_from_db(whisper_id):
     query = "SELECT status FROM BucketList.tbl_projects WHERE whisper_id= '{}'"
     final_query = query.format(whisper_id)
@@ -147,6 +156,7 @@ def get_json_status_from_db(whisper_id):
         return None
 
 
+# Get a list of media files associated with a given whisper_id and file type...
 def get_media_from_db(whisper_id, media_type):
     query = "SELECT filename FROM BucketList.tbl_media WHERE whisper_id= '{}' AND media_type='{}' ORDER BY media_type ASC, origin_date ASC"
     final_query = query.format(whisper_id, media_type)
@@ -166,6 +176,7 @@ def get_media_from_db(whisper_id, media_type):
         return None
 
 
+# Get all the whispers that have been initiated from the PI
 def get_whispers_from_db(user_username):
     query = "SELECT * FROM BucketList.tbl_projects WHERE user_username= '{}'"
     final_query = query.format(user_username)
@@ -184,6 +195,7 @@ def get_whispers_from_db(user_username):
         return None
 
 
+# Get the media file for a given username, using functions above...
 def get_media_for_username(username):
     try:
         whisper_list = get_whispers_from_db(username)
@@ -202,6 +214,7 @@ def get_media_for_username(username):
         logging.error("[DB] error " +e.message)
     return whisper_media_list
 
+# Used for testing...
 if __name__ == '__main__':
     current_timestamp = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
     # a = add_new_whisper("a@d", "my_diaries_7", current_timestamp)

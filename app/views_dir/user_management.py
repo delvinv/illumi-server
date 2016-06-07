@@ -8,7 +8,7 @@ logging.basicConfig(filename='logs/illumi_users.log',level=logging.INFO, datefmt
 
 @app.route('/showSignUp')
 def showSignUp():
-    return render_template('signup.html')
+    return render_template('old/signup.html')
 
 
 @app.route('/signUp', methods=['POST', 'GET'])
@@ -54,16 +54,16 @@ def signIn():
                     print session['user']
                     return redirect('userHome')
                 else:
-                    return render_template('error.html', error="Password check failed!")
+                    return render_template('old/error.html', error="Password check failed!")
             else:
-                return render_template('error.html', error="user does not exist!")
+                return render_template('old/error.html', error="user does not exist!")
         else:
-            return render_template('error.html', error="Both fields required..")
-    return render_template('signin.html')
+            return render_template('old/error.html', error="Both fields required..")
+    return render_template('old/signin.html')
 
 
 @app.route('/logout')
 def logout():
     session.pop('user', None)
-    return render_template('index.html')
+    return render_template('old/index.html')
 

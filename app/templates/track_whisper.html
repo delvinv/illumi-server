@@ -1,0 +1,52 @@
+{% extends "base_layout.html" %}
+{% block body_main_block %}
+	<header id="head" class="secondary"></header>
+
+	<!-- container -->
+	<div class="container">
+
+		<ol class="breadcrumb">
+			<li><a href="index.html">Home</a></li>
+			<li class="active">Track Illumi</li>
+		</ol>
+
+		<div class="row">
+			{% for entry in whisper_names_list %}
+                <h3> {{ entry }} </h3>
+                <div class="col-md-12 highlight">
+                    <h4>{{entry}}</h4>
+                </div>
+        {#        {% for current_image in image_filenames_list %}#}
+        {#        {{ url_for('static',filename='uploads/') }}#}
+                <img src="{{ image_filenames_list[loop.index - 1] }}" alt="{{ entry }}" style="max-width: 100%">
+        {#        {% endfor %}#}
+                <p> Audio: </p>
+        {#        {% for current_audio in audio_filenames_list %}#}
+                    <audio controls>
+                        <source src="{{ audio_filenames_list[loop.index - 1] }}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+        {#        {% endfor %}#}
+            {% else %}
+                <em>Unbelievable.  No entries here so far</em>
+            {% endfor %}
+			<!-- Article main content -->
+			<header class="page-header">
+				<h1 class="page-title" style="margin:15px">Track an Illumi</h1>
+			</header>
+
+            <div class="col-md-8 highlight">
+                <h4>Image 1</h4>
+                <p>Image 1</p>
+            </div>
+
+			<div class="col-md-4 highlight">
+                <h4>Audio 1</h4>
+                <p>Audio 1</p>
+            </div>
+
+			
+			
+		</div>
+	</div>	<!-- /container -->
+{% endblock %}

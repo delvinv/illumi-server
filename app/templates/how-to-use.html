@@ -1,0 +1,33 @@
+{% extends "base_layout.html" %}
+{% block body_main_block %}
+	<header id="head" class="secondary"></header>
+
+	<!-- container -->
+	<div class="container">
+
+		<ol class="breadcrumb">
+			<li><a href="index.html">Home</a></li>
+			<li><a href="about.html">About</a></li>
+			<li class="active">How to Use Illumi</li>
+		</ol>
+
+		<div class="row">
+			<header class="page-header">
+				<h1 class="page-title">How to Use Illumi</h1>
+			</header>
+				
+			<p>Once the physical artefact is installed and set-up onto the WiFi, little is required to run and use the artefact.<br>
+			Here are a few things you need to know:	<br>
+			<ol type="1">
+				<li>The book will always be switched on so it can search for messages from the server.</li>
+				<li>Illumi runs from a portable charger. When this runs out of battery, Illumi will turn off. During this time, the device will not be discoverable by the server and will not receive any messages.</li>
+				<li>To avoid the battery running out of charge, the device should be plugged in using the retractable USB when it is not being used.</li>
+				<li>If the battery does run out, once it is plugged in, the device will boot up and reload the programme automatically.</li>
+				<li>The LED positioned on the top of the book will flash when a new message is received.</li>
+				<li>Once a message is received, there will be on-screen instructions to guide you through the task.</li>
+				<li>Once the task is complete, the book will return to its original state of looking for messages from the server.</li>
+			</ol>
+			<p>It is recommended that when the book is not being used, it should be plugged in to a power source to avoid missing out on messages that may be sent when the device has run out of battery.</p>
+		</div>
+	</div>	<!-- /container -->
+{% endblock %}
