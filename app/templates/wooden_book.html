@@ -1,4 +1,12 @@
 {% extends "base_layout.html" %}
+{% block signin_or_logout_nav %}
+    {% if signed_in == true%}
+        <li><a class="btn" href="logout">LOGOUT</a></li>#}
+    {% else %}
+        <li><a class="btn" href="signIn">SIGN IN / SIGN UP</a></li>#}
+    {% endif %}
+{% endblock %}
+
 {% block body_main_block %}
 	<header id="head" class="secondary"></header>
 
@@ -41,16 +49,16 @@
             </div>
 			
 			<div class="col-md-4 highlight">
-                <h4>Audio 1</h4>
-                <p>Audio 1</p>
+{#                <h4>Audio 1</h4>#}
+{#                <p>Audio 1</p>#}
             </div>
 			
 			<div class="col-sm-9">
 				<hr style="height:5px" color="grey" width="130%">
 				<h4><b>About the Wooden Book Templates</b></h4><br><br>
-				<center><img src="assets/images/book_cover_small.jpg" alt="Book Cover Template"><br><br>
-				<img src="assets/images/sides_image_small.jpg" alt="Book Cover Template" width="90%"><br><br><br><br><br>
-				<img src="assets/images/hardware_housing_small.jpg" alt="Book Cover Template"></center>
+				<center><img src="{{url_for('static', filename='images/book_cover_small.jpg')}}" alt="Book Cover Template"><br><br>
+				<img src="{{url_for('static', filename='images/sides_image_small.jpg')}}" alt="Book Cover Template" width="90%"><br><br><br><br><br>
+				<img src="{{url_for('static', filename='images/hardware_housing_small.jpg')}}" alt="Book Cover Template"></center>
 				<br>
 				<hr style="height:5px" color="grey" width="130%">
 			</div>	
@@ -65,8 +73,8 @@
             </div>
 				
 			<div class="col-md-4 highlight">
-                <h4>Audio 2</h4>
-                <p>Audio 2</p>
+{#                <h4>Audio 2</h4>#}
+{#                <p>Audio 2</p>#}
             </div>
 				
 			</article>

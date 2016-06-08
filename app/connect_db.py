@@ -210,7 +210,7 @@ def get_media_for_username(username):
             whisper_single = {"whisper_name": whisper_name, "audio_filenames": audio_filenames, "image_filenames": image_filenames}
             whisper_media_list.append(whisper_single)
     except Exception, e:
-        print "[DB] error " +e.message
+        print "[DB] error " +str(e.message) + ", " + str(e.args)
         logging.error("[DB] error " +e.message)
     return whisper_media_list
 

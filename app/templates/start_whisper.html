@@ -1,4 +1,17 @@
 {% extends "base_layout.html" %}
+
+{% block title %}
+Start an ILLUMI
+{% endblock %}
+
+{% block signin_or_logout_nav %}
+    <li><a class="btn" href="logout">LOGOUT</a></li>
+{% endblock %}
+
+{% block nav_active_start %}
+    class="active"
+{% endblock %}
+
 {% block body_main_block %}
 
 	<header id="head" class="secondary"></header>
@@ -30,15 +43,20 @@
 				<br>
 					<form method="POST" action="/uploadWhisper" enctype="multipart/form-data">
 						<div class="row">
-							<div class="col-sm-4">
+							<div class="col-sm-8">
 								<input type="name" name="whisper_title" id="whisper_title" class="form-control" placeholder="Whisper Title" required autofocus>
                                 <input type="name" name="username" id="username" style="display: none" value="{{ session['user'] }}">
 							</div>
+                        </div>
+                        <br>
+                        <div class="row">
 							<div class="col-sm-4">
-								<input type="file" placeholder="Audio File" accept="audio/*" name="audio_file" id="audio_file" class="form-control" required autofocus>
+                                <label for="audio_file">Select audio</label>
+								<input type="file" placeholder="Audio File" accept="audio/wav,audio/mpeg3,.wav,.mp3" name="audio_file" id="audio_file" class="form-control" required autofocus>
 							</div>
 							<div class="col-sm-4">
-								<input type="file" accept="image/*" name="image_file" id="image_file" class="form-control" placeholder="Image File" required autofocus>
+                                <label for="image_file">Select image</label>
+								<input type="file" accept="image/jpeg" name="image_file" id="image_file" class="form-control" placeholder="Image File" required autofocus>
 							</div>
 						</div>
 						<br>

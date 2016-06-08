@@ -1,4 +1,21 @@
 {% extends "base_layout.html" %}
+
+{% block title %}
+The ILLUMI Manuscripts
+{% endblock %}
+
+{% block signin_or_logout_nav %}
+    {% if signed_in == true%}
+        <li><a class="btn" href="logout">LOGOUT</a></li>#}
+    {% else %}
+        <li><a class="btn" href="signIn">SIGN IN / SIGN UP</a></li>#}
+    {% endif %}
+{% endblock %}
+
+{% block nav_active_main %}
+    class="active"
+{% endblock %}
+
 {% block body_main_block %}
 {% block body_class %} "home" {% endblock %}
 	<!-- Header -->
@@ -19,32 +36,32 @@
 		<h2 class="thin">What is ILLUMI?</h2>
         <div class="container">
             <div class="col-md-6 highlight">
-                <img src="assets/images/introducing_illumi.png" alt="">
+                <img src="{{ url_for('static',filename='images/introducing_illumi.png')}}" alt="">
                 <div class="caption">
                     <h4>Introducing ILLUMI</h4>
-                    <p>ILLUMI is a digital book which allows researchers to share their ideas to a wider audience. But, there is a twist: the researcher doesn’t get to control who engages with their idea. Taking the premise of Chinese Whispers, the researcher begins the chain and the message begins its journey. </p>
+                    <p class="text-justify">ILLUMI is a digital book which allows researchers to share their ideas to a wider audience. But, there is a twist: the researcher doesn’t get to control who engages with their idea. Taking the premise of Chinese Whispers, the researcher begins the chain and the message begins its journey. </p>
                 </div>
             </div>
             <div class="col-md-6 highlight">
-                <img src="assets/images/why_illumi.png" alt="">
+                <img src="{{ url_for('static',filename='images/why_illumi.png')}}" alt="">
                 <div class="caption">
                     <h4>Why ILLUMI?</h4>
-                    <p>ILLUMI came about through discussions with older citizens who were interested in deeper engagement with the university. The discussions revealed a deep-seated frustration with the way that research is currently undertaken, disseminated and the way participant recruitment was carried out.</p>
+                    <p class="text-justify">ILLUMI came about through discussions with older citizens who were interested in deeper engagement with the university. The discussions revealed a deep-seated frustration with the way that research is currently undertaken, disseminated and the way participant recruitment was carried out.</p>
                 </div>
             </div>
             <div class="clearfix visible-xs-block"></div>
             <div class="col-md-6 highlight">
-                <img src="assets/images/encouraging_reflection.png" alt="">
+                <img src="{{ url_for('static',filename='images/encouraging_reflection.png')}}" alt="">
                 <div class="caption">
                     <h4>Encouraging Reflection</h4>
-                    <p>ILLUMI disseminates researchers’ ideas across a chain of citizens and encourages them to think and reflect on what they’ve heard. It also encourage the researcher to reflect on their ideas to consider how to improve them based on the ILLUMI messages.</p>
+                    <p class="text-justify">ILLUMI disseminates researchers’ ideas across a chain of citizens and encourages them to think and reflect on what they’ve heard. It also encourage the researcher to reflect on their ideas to consider how to improve them based on the ILLUMI messages.</pm>
                 </div>
             </div>
             <div class="col-md-6 highlight">
-                <img src="assets/images/redefining_impact.png" alt="">
+                <img src="{{ url_for('static',filename='images/redefining_impact.png')}}" alt="">
                 <div class="caption">
                     <h4>Redefining Impact</h4>
-                    <p>Whilst for the public, it’s a new and simple way to engage with the university, for the researcher it shows how impressionable their ideas are to the people they’re engaging with. It helps to consider how much impact the research would have and also explores what is useful in their research. </p>
+                    <p class="text-justify">Whilst for the public, it’s a new and simple way to engage with the university, for the researcher it shows how impressionable their ideas are to the people they’re engaging with. It helps to consider how much impact the research would have and also explores what is useful in their research. </p>
                 </div>
             </div>
         </div>
@@ -76,13 +93,13 @@
 			<div class="row">
 				<div class="col-md-3 col-sm-6 highlight">
 					<div class="h-caption"><h4><i class="fa fa-play-circle fa-5"></i>Starting an ILLUMI</h4></div>
-					<div class="h-body text-center">
+					<div class="h-body text-justify">
 						<p>ILLUMI allows researchers to create an account where they can upload an ILLUMI which consists of an audio file explaining their research and an image to go alongside it. The core idea is for the researcher to share their research with citizens. When they send it to the Chinese whispers chain, the researcher can track where the message is currently.</p>
 					</div>
 				</div>
 				<div class="col-md-3 col-sm-6 highlight">
 					<div class="h-caption"><h4><i class="fa fa-comment fa-5"></i>Receiving an ILLUMI</h4></div>
-					<div class="h-body text-center">
+					<div class="h-body text-justify">
 						<p>Once the researcher sends the whisper, a participant in the chain (randomly selected) receives the message. They can view the image and listen to the audio the researcher has sent. The information gives you a snapshot of the research idea so you get to know about ongoing research and through the process of send your ILLUMI, you can give feedback to the researcher.   
             <br>
             <br></p>
@@ -90,13 +107,13 @@
 				</div>
 				<div class="col-md-3 col-sm-6 highlight">
 					<div class="h-caption"><h4><i class="fa fa-microphone fa-5"></i>ILLUMI Reflections</h4></div>
-					<div class="h-body text-center">
+					<div class="h-body text-justify">
 						<p>Once you have viewed the message, the digital book will encourage you to reflect on the information you have received. After 24 hours, you can return to create your ILLUMI image and audio. Your recording is your interpretation of the message you received…just like Chinese whispers. Your message will then be sent to the next person in the chain. </p>
 					</div>
 				</div>
 				<div class="col-md-3 col-sm-6 highlight">
 					<div class="h-caption"><h4><i class="fa fa-check-circle fa-5"></i>Closing the ILLUMI</h4></div>
-					<div class="h-body text-center">
+					<div class="h-body text-justify">
 						<p>Once the Illumi has been sent to all the citizens in the chain, it returns to the researcher who can see the images and listen to the audio. They can see how their Illumi has evolved and can use it to improve ideas and how they communicate to others. The Illumi changing allows the researcher to see what is understandable and useful as opposed to complicated and impractical. </p>
 					</div>
 				</div>

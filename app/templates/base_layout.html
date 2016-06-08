@@ -33,27 +33,27 @@
 			<div class="navbar-header">
 				<!-- Button for smallest screens -->
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-				<a class="navbar-brand" href="index.html"><img src="{{ url_for('static',filename='images/logo.png')}}" alt="Progressus HTML5 template"></a>
+				<a class="navbar-brand" href="/"><img src="{{ url_for('static',filename='images/logo.png')}}" alt="ILLUMI Manuscripts logo"></a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav pull-right">
-					<li><a href="index.html">Home</a></li>
+					<li {% block nav_active_main %} {% endblock %}><a href="/">Home</a></li>
 					<li class="dropdown">
-						<li class="active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">About<b class="caret"></b></a>
+{#                 class="active"#}
+						<li {% block nav_active_about %} {% endblock %}><a href="#" class="dropdown-toggle" data-toggle="dropdown">About<b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="sidebar-right.html">About</a></li>
-							<li><a href="sidebar-left.html">Installation Instructions</a></li>
-							<li><a href="sidebar-right.html">How to Use</a></li>
-							<li><a href="sidebar-right.html">About the Server</a></li>
-							<li><a href="sidebar-right.html">About the Pi's</a></li>
-							<li><a href="sidebar-right.html">About the Web Page</a></li>
-							<li class="active"><a href="sidebar-right.html">Making the Book</a></li>
+							<li><a href="about">About</a></li>
+							<li><a href="installation-instructions">Installation Instructions</a></li>
+							<li><a href="how-to-use">How to Use</a></li>
+							<li><a href="about-server">About the Server</a></li>
+							<li><a href="about-pi">About the Pi's</a></li>
+							<li><a href="about-web">About the Web Page</a></li>
+							<li><a href="wooden_book">Making the Book</a></li>
 						</ul>
-					<li><a href="start_whisper.html">Start Illumi</a></li>
-                    <li><a href="track_whisper.html">Track Illumi</a></li>
-					<li><a href="contact.html">Contact</a></li>
+					<li {% block nav_active_start %}{% endblock %}><a href="startWhisper">Start Illumi</a></li>
+                    <li {% block nav_active_track %}{% endblock %}><a href="track">Track Illumi</a></li>
+					<li {% block nav_active_contact %}{% endblock %}><a href="contact">Contact</a></li>
                     {% block signin_or_logout_nav %} {% endblock %}
-{#					<li><a class="btn" href="signin.html">SIGN IN / SIGN UP</a></li>#}
 				</ul>
 			</div><!--/.nav-collapse -->
 		</div>
@@ -113,7 +113,7 @@
 					<div class="col-md-6 widget">
 						<h3 class="widget-title">Background Information</h3>
 						<div class="widget-body">
-							<p>This platform was produced as part of a two-week intensive technology module at Open Lab, Newcastle University. For more information, please contact <a href="about/delvin">Delvin Varghese</a></p>
+							<p>This platform was produced as part of a two-week intensive technology module at Open Lab, Newcastle University. For more information, please contact <a href="http://delv.in">Delvin Varghese</a></p>
 						</div>
 					</div>
 
@@ -150,8 +150,8 @@
 	</footer>
 
 	<!-- JavaScript libs are placed at the end of the document so the pages load faster -->
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js') }}"></script>
-	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js')}}"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 	<script src="{{ url_for('static',filename='js/headroom.min.js') }}"></script>
 	<script src="{{ url_for('static',filename='js/jQuery.headroom.min.js') }}"></script>
 	<script src="{{ url_for('static',filename='js/template.js') }}"></script>

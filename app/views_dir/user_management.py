@@ -11,6 +11,7 @@ def showSignUp():
     return render_template('old/signup.html')
 
 
+@app.route('/register', methods=['POST', 'GET'])
 @app.route('/signUp', methods=['POST', 'GET'])
 def signUp():
     # read the incoming values
@@ -37,6 +38,7 @@ def signUp():
 # def showSignIn():
 #     return render_template('signin.html')
 
+@app.route('/login', methods=['POST', 'GET'])
 @app.route('/showSignIn', methods=['POST', 'GET'])
 @app.route('/signIn', methods=['POST', 'GET'])
 def signIn():
@@ -54,16 +56,16 @@ def signIn():
                     print session['user']
                     return redirect('userHome')
                 else:
-                    return render_template('old/error.html', error="Password check failed!")
+                    return render_template('error.html', error="Password check failed!")
             else:
-                return render_template('old/error.html', error="user does not exist!")
+                return render_template('error.html', error="user does not exist!")
         else:
-            return render_template('old/error.html', error="Both fields required..")
-    return render_template('old/signin.html')
+            return render_template('error.html', error="Both fields required..")
+    return render_template('signin.html')
 
 
 @app.route('/logout')
 def logout():
     session.pop('user', None)
-    return render_template('old/index.html')
+    return render_template('index.html')
 

@@ -1,4 +1,21 @@
 {% extends "base_layout.html" %}
+
+{% block title %}
+How to Use
+{% endblock %}
+
+{% block signin_or_logout_nav %}
+    {% if signed_in == true%}
+        <li><a class="btn" href="logout">LOGOUT</a></li>
+    {% else %}
+        <li><a class="btn" href="signIn">SIGN IN / SIGN UP</a></li>
+    {% endif %}
+{% endblock %}
+
+{% block nav_active_about %}
+    class="active"
+{% endblock %}
+
 {% block body_main_block %}
 	<header id="head" class="secondary"></header>
 

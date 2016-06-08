@@ -1,4 +1,17 @@
 {% extends "base_layout.html" %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block signin_or_logout_nav %}
+    {% if signed_in == true%}
+        <li><a class="btn" href="logout">LOGOUT</a></li>#}
+    {% else %}
+        <li><a class="btn" href="signIn">SIGN IN / SIGN UP</a></li>#}
+    {% endif %}
+{% endblock %}
+
 {% block body_main_block %}
 	<header id="head" class="secondary"></header>
 
@@ -25,14 +38,14 @@
 							<p class="text-center text-muted">If you do not have an account, create one here: <a href="/signUp">Register</a>.</p>
 							<hr>
 							
-							<form>
+							<form method="POST" action="{{ url_for('signIn') }}">
 								<div class="top-margin">
 									<label>Username/Email <span class="text-danger">*</span></label>
-									<input type="text" class="form-control">
+									<input type="email" name="inputEmail" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
 								</div>
 								<div class="top-margin">
 									<label>Password <span class="text-danger">*</span></label>
-									<input type="password" class="form-control">
+									<input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
 								</div>
 
 								<hr>
@@ -42,7 +55,7 @@
 										<b><a href="#">Forgot password?</a></b>
 									</div>
 									<div class="col-lg-4 text-right">
-										<button class="btn btn-action" type="submit">Sign in</button>
+										<button id="btnSignIn" class="btn btn-action" type="submit">Sign in</button>
 									</div>
 								</div>
 							</form>
