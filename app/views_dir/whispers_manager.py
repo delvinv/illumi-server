@@ -327,8 +327,10 @@ def track_whispers():
         whisper_names_list = []
         for item in media_collection:
             try:
-                print item
-                print "ITEM IS: " + str(item["audio_filenames"][0][0])
+                print item["whisper_names"]
+                print item["audio_filenames"]
+                print item["image_filenames"]
+                # print "ITEM IS: " + str(item["audio_filenames"][0][0])
                 logging.info("ITEM IS: " + str(item["audio_filenames"][0][0]))
                 audio_filenames_list.append(str(item["audio_filenames"][0][0]))
                 image_filenames_list.append(str(item["image_filenames"][0][0]))
