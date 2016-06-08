@@ -8,30 +8,32 @@ logging.basicConfig(filename='logs/illumi_users.log',level=logging.INFO, datefmt
 
 @app.route('/showSignUp')
 def showSignUp():
-    return render_template('old/signup.html')
+    return render_template('signup.html')
 
 
 @app.route('/register', methods=['POST', 'GET'])
 @app.route('/signUp', methods=['POST', 'GET'])
 def signUp():
-    # read the incoming values
-    _name = request.form['inputName']
-    _email = request.form['inputEmail']
-    _password = request.form['inputPassword']
+    if request.method == "POST":
+        # read the incoming values
+        _name = request.form['inputName']
+        _email = request.form['inputEmail']
+        _password = request.form['inputPassword']
 
-    # check if fields submitted..
-    if _name and _email and _password:
-        _hashed_password = generate_password_hash(_password)
-        db_result = connect_db.signup_to_database(_name, _email, _hashed_password)
-        print "DB_Result = " + str(db_result)
-        output = connect_db.validate_email(_email)
-        if output:
-            session['user'] = output[0]
-            session['user_email'] = _email
-        return redirect('/userHome')
-        # return json.dumps({'message':'User created successfully !'})
-    else:
-        return json.dumps({'html': '<span>Enter all fields please!</span>'})
+        # check if fields submitted..
+        if _name and _email and _password:
+            _hashed_password = generate_password_hash(_password)
+            db_result = connect_db.signup_to_database(_name, _email, _hashed_password)
+            print "DB_Result = " + str(db_result)
+            output = connect_db.validate_email(_email)
+            if output:
+                session['user'] = output[0]
+                session['user_email'] = _email
+            return redirect('/userHome')
+            # return json.dumps({'message':'User created successfully !'})
+        else:
+            return json.dumps({'html': '<span>Enter all fields please!</span>'})
+    return render_template("signup.html")
 
 
 # @app.route('/showSignIn')
