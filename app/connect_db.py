@@ -176,6 +176,25 @@ def get_media_from_db(whisper_id, media_type):
         return None
 
 
+def get_whispers_repeated_from_db(whisper_id, media_type):
+    query = "SELECT whisper_id FROM BucketList.tbl_media WHERE whisper_id= '{}' AND media_type='{}' ORDER BY media_type ASC, origin_date ASC"
+    final_query = query.format(whisper_id, media_type)
+    try:
+        cursor.execute(final_query)
+        conn.commit()
+        output = cursor.fetchall()
+        print "[DB] " + str(whisper_id) + " retrieved successfully.."
+        logging.info("[DB] " + str(whisper_id) + " retrieved successfully..")
+        return output
+    except MySQLdb.IntegrityError, e:
+        print "[DB] " + "Not retrieved.. " + str(e.args)
+        logging.error("[DB] " + "Not retrieved.. " + str(e.args))
+        conn.rollback()
+        print e.message
+        logging.error(e.message)
+        return None
+
+
 # Get all the whispers that have been initiated from the PI
 def get_whispers_from_db(user_username):
     query = "SELECT * FROM BucketList.tbl_projects WHERE user_username= '{}'"
@@ -206,8 +225,8 @@ def get_media_for_username(username):
 
             audio_filenames = get_media_from_db(whisper_id, "audio")
             image_filenames = get_media_from_db(whisper_id, "image")
-
-            whisper_single = {"whisper_name": whisper_name, "audio_filenames": audio_filenames, "image_filenames": image_filenames}
+            whisper_ids_repeated = get_whispers_repeated_from_db(whisper_id, "image")
+            whisper_single = {"whisper_names": whisper_ids_repeated, "audio_filenames": audio_filenames, "image_filenames": image_filenames}
             whisper_media_list.append(whisper_single)
     except Exception, e:
         print "[DB] error " +str(e.message) + ", " + str(e.args)

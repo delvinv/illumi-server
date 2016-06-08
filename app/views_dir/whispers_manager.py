@@ -240,9 +240,9 @@ def upload_whisper_form():
         if 'user' in session:
             op_output_success = handle_researcher_upload(username, image_file, audio_file)
             if op_output_success:
-                return render_template('old/success.html'), 200
+                return render_template('error.html', error="Successfully started whisper. You will receive an email when completed."), 200
             else:
-                return render_template('old/error.html'), 400
+                return render_template('error.html', error="Unfortunately, an error occurred. Sorry not feeling helpful right now."), 400
         else:
             # Request is from a Pi so we need to get the whisper_id for which the Pi has sent a request to the server..
             whisper_id = request.form['whisper_id']
@@ -266,8 +266,8 @@ def upload_whisper_form():
                         logging.info("[PI] " + "This Pi has already sent us files..")
                         return "Already received files from this Pi", 400
                     else:
-                        print "[PI] " + "no files from " + str(item)
-                        logging.info("[PI] " + "no files from " + str(item))
+                        print "[PI] " + "Fresh files. Not previously received from " + str(item)
+                        logging.info("[PI] " + "Fresh files. Not previously received from " + str(item))
             if not bool_pi_found_in_list:
                 print "[PI] " + "Naughty Pi! Not meant to be sending us files!"
                 logging.info("[PI] " + "Naughty Pi! Not meant to be sending us files!")
@@ -293,17 +293,17 @@ def upload_whisper_form():
             if username in existing_whisper_list[-1]:
                 success_boolean = forward_final_whisper_to_researcher(existing_whisper_list, username, whisper_id)
                 if success_boolean:
-                    return "Success mate!", 200
+                    return "Final Pi has uploaded..!", 200
                 else:
-                    return "Failed..", 400
+                    return "Final PI failed to fully upload", 400
             else:
                 success_boolean = forwarding_whisper_next_client(existing_whisper_list, form_contents_json_string, username, whisper_id)
                 if success_boolean:
-                    return "Great success.", 200
+                    return "Received from PI gratefully, now next PI..", 200
                 else:
-                    return "Next socket not found.", 400
+                    return "Could not forward to next PI. Aw shucks :(", 400
         return redirect(url_for('track_whispers')), 200
-    return render_template('old/userHome.html'), 400
+    return render_template('about.html'), 400
 
 
 @app.route('/uploads/<filename>')
@@ -312,6 +312,7 @@ def uploaded_file(filename):
                                filename)
 
 
+# This is where researchers can track their whispers...
 @app.route('/trackWhisper')
 @app.route('/track')
 def track_whispers():
@@ -332,7 +333,7 @@ def track_whispers():
                 logging.info("ITEM IS: " + str(item["audio_filenames"][0][0]))
                 audio_filenames_list.append(str(item["audio_filenames"][0][0]))
                 image_filenames_list.append(str(item["image_filenames"][0][0]))
-                whisper_names_list.append(str(item["whisper_name"]))
+                whisper_names_list.append(str(item["whisper_names"][0][0]))
             except Exception, e:
                 print "[WHISPERS] Exception.. \n" + str(e.message)
         # Generate all the whispers and links on a single page..

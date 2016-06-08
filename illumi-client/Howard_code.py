@@ -5,16 +5,16 @@ import sys
 
 print "Username is: " + str(sys.argv[1])
 PI_USERNAME = str(sys.argv[1])
-SOCKET_CONNECTION_URL = "ws://gooseberry:5000/echo"
+SOCKET_CONNECTION_URL = "ws://localhost:5000/echo"
 ws = create_connection(SOCKET_CONNECTION_URL)
 
 
 # IMPORTANT: whisper_id is a pre-existing number associated with already-created whispers on the server, so send me something that i have sent you already...
 # Random number used here for testing purposes only!
 def PostRequest(whisper_id):
-    files = {'image_file' : open("image.jpg", 'rb'), 'audio_file' : open('audio.wav', 'rb')}
+    files = {'image_file' : open("image.jpg", 'rb'), 'audio_file' : open('audio.mp3', 'rb')}
     piid = {'whisper_id': whisper_id, 'username': PI_USERNAME}
-    url = 'http://gooseberry/uploadWhisper'
+    url = 'http://localhost:5000/uploadWhisper'
     # print "[SOCKET]: " + "sending files using http.."
     r = requests.post(url, data=piid, files=files)
     print r.status_code
