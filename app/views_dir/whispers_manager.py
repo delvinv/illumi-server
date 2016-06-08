@@ -13,7 +13,6 @@ from random import shuffle
 import email_sending
 
 import uuid
-uuid_generator = uuid.uuid4()
 
 WEB_URL = "http://52.40.252.108/"
 INTERNAL_UPLOAD_FOLDER = 'app/static/uploads/'
@@ -102,7 +101,7 @@ def handle_researcher_upload(username, image_file, audio_file):
     whisper_id = connect_db.add_new_whisper(user_email, whisper_title, current_timestamp)
 
     # Generate a uuid that will be used to name files before saving them..
-    gen_filename = uuid_generator.hex
+    gen_filename = uuid.uuid4().hex
     # Based on this filename, we can save files to disk..
     form_image_url = save_file_and_return_url(image_file, gen_filename)
     form_audio_url = save_file_and_return_url(audio_file, gen_filename)
@@ -274,7 +273,7 @@ def upload_whisper_form():
                 return "Pi is not on list whisper receivers.", 400
 
             # Generate a filename, and then save the audio. image files in database and then on disk..
-            gen_filename = uuid_generator.hex
+            gen_filename = uuid.uuid4().hex
             form_image_url = save_file_and_return_url(image_file, gen_filename)
             form_audio_url = save_file_and_return_url(audio_file, gen_filename)
             form_contents_json_string = generate_form_contents_json(form_audio_url, form_image_url, whisper_id)
