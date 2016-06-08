@@ -27,16 +27,6 @@ Track an ILLUMI
             <h1 class="page-title" style="margin:15px">Track an Illumi</h1>
         </header>
 
-        <div class="col-md-8 highlight">
-            <h4>Image 1</h4>
-            <p>Image 1</p>
-        </div>
-
-        <div class="col-md-4 highlight">
-            <h4>Audio 1</h4>
-            <p>Audio 1</p>
-        </div>
-
 		<div class="row">
 			{% for entry in whisper_names_list %}
                 <div class="col-md-12 highlight">
@@ -47,7 +37,7 @@ Track an ILLUMI
                 </div>
                 <div class="col-md-4 highlight">
                     <audio controls>
-                        <source src="{{ audio_filenames_list[loop.index - 1] }}" type="audio/mpeg3">
+                        <source src="{{ audio_filenames_list[loop.index - 1] }}" type="audio/mpeg">
                         Your browser does not support the audio element.
                     </audio>
                 </div>
