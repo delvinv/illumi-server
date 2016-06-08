@@ -101,13 +101,13 @@ def handle_researcher_upload(username, image_file, audio_file):
     whisper_id = connect_db.add_new_whisper(user_email, whisper_title, current_timestamp)
 
     # Generate a uuid that will be used to name files before saving them..
-    gen_filename = uuid.uuid4().hex
+    gen_filename = str(uuid.uuid4().hex)
     # Based on this filename, we can save files to disk..
     form_image_url = save_file_and_return_url(image_file, gen_filename)
     form_audio_url = save_file_and_return_url(audio_file, gen_filename)
     # Now we save file information to the media database (SQL)
-    connect_db.add_file_details_to_db(form_audio_url,whisper_id,"audio",username,current_timestamp)
-    connect_db.add_file_details_to_db(form_image_url,whisper_id,"image",username,current_timestamp)
+    connect_db.add_file_details_to_db(form_audio_url,whisper_id,"audio",user_email,current_timestamp)
+    connect_db.add_file_details_to_db(form_image_url,whisper_id,"image",user_email,current_timestamp)
     # Generate a JSON object that will be sent to Pi devices..
     form_contents_json_string = generate_form_contents_json(form_audio_url, form_image_url, whisper_id)
 

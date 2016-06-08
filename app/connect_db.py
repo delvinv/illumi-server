@@ -73,7 +73,7 @@ def get_id_from_whisper(username, title):
     output = cursor.fetchone()
     print "[DB] " + str(output[0])
     logging.info("[DB] " + str(output[0]))
-    return output[0]
+    return str(output[0])
 
 
 # Adding a new whisper from a user/researcher to the database..
