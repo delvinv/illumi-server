@@ -220,7 +220,7 @@ def get_media_for_username(username):
         whisper_list = get_whispers_from_db(username)
         whisper_media_list = []
         for whisper in whisper_list:
-            whisper_id = whisper[0]
+            whisper_id = str(whisper[0])
             whisper_name = whisper[1]
 
             audio_filenames = get_media_from_db(whisper_id, "audio")
@@ -228,6 +228,7 @@ def get_media_for_username(username):
             whisper_ids_repeated = get_whispers_repeated_from_db(whisper_id, "image")
             whisper_single = {"whisper_names": whisper_ids_repeated, "audio_filenames": audio_filenames, "image_filenames": image_filenames}
             whisper_media_list.append(whisper_single)
+            print "Audio Filenames: "  + str(audio_filenames)
         print "Whispers List: " + str(whisper_media_list)
     except Exception, e:
         print "[DB] error " +str(e.message) + ", " + str(e.args)
