@@ -330,15 +330,21 @@ def track_whispers():
                 print item["whisper_names"]
                 print item["audio_filenames"]
                 print item["image_filenames"]
+                for index, files in enumerate(item["audio_filenames"]):
+                    current_audio = str(files[0])
+                    print "[WHISPERS} Files is " + current_audio
+                    audio_filenames_list.append(current_audio)
+                    image_filenames_list.append(str(item["image_filenames"][index][0]))
                 # print "ITEM IS: " + str(item["audio_filenames"][0][0])
                 logging.info("ITEM IS: " + str(item["audio_filenames"][0][0]))
-                audio_filenames_list.append(str(item["audio_filenames"][0][0]))
-                image_filenames_list.append(str(item["image_filenames"][0][0]))
-                whisper_names_list.append(str(item["whisper_names"][0][0]))
+                # audio_filenames_list.append(str(item["audio_filenames"][0][0]))
+                # image_filenames_list.append(str(item["image_filenames"][0][0]))
+                whisper_names_list.append(str(item["whisper_names"]))
+                print "Whisper)names)list: " + str(whisper_names_list)
             except Exception, e:
                 print "[WHISPERS] Exception.. \n" + str(e.message)
         # Generate all the whispers and links on a single page..
-        print audio_filenames_list
+        print "[Audio filenames list] " + str(audio_filenames_list)
         logging.info(audio_filenames_list)
         return render_template('track_whisper.html',
                                audio_filenames_list=audio_filenames_list,
