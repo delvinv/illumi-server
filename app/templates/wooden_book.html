@@ -43,26 +43,25 @@
 				<p>The book consists of laser cut wood and hand-cut foam board to secure the hardware in place. If different equipment is to be used, the measurements in the templates would need to be adapted to suit.</p><br>
 				<p>Click on the links below to view the Adobe Illustrator files to laser cut the book:</p>
 				<ul>
-					<li><a href="assets/files/book_cover.ai">Book Cover</a></li>
-					<li><a href="assets/files/box_sides_housing.ai">Box Side and Housing</a></li><br>
+					<li><a href="{{ url_for('static', filename='files/book_cover.ai')}}">Book Cover</a></li>
+					<li><a href="{{ url_for('static', filename='files/box_sides_housing.ai')}}">Box Side and Housing</a></li><br>
 				</ul>
             </div>
 			
 			<div class="col-md-4 highlight">
-{#                <h4>Audio 1</h4>#}
-{#                <p>Audio 1</p>#}
+                <p><br><img src="{{ url_for('static', filename='images/book_3.jpg')}}" alt="" class="img-rounded pull-right" width="400" ></p>
             </div>
-			
+
 			<div class="col-sm-9">
 				<hr style="height:5px" color="grey" width="130%">
 				<h4><b>About the Wooden Book Templates</b></h4><br><br>
-				<center><img src="{{url_for('static', filename='images/book_cover_small.jpg')}}" alt="Book Cover Template"><br><br>
-				<img src="{{url_for('static', filename='images/sides_image_small.jpg')}}" alt="Book Cover Template" width="90%"><br><br><br><br><br>
-				<img src="{{url_for('static', filename='images/hardware_housing_small.jpg')}}" alt="Book Cover Template"></center>
+				<center><img src="{{ url_for('static', filename='images/book_cover_small.jpg')}}" alt="Book Cover Template"><br><br>
+				<img src="{{ url_for('static', filename='images/sides_image_small.jpg')}}" alt="Book Cover Template" width="90%"><br><br><br><br><br>
+				<img src="{{ url_for('static', filename='images/hardware_housing_small.jpg')}}" alt="Book Cover Template"></center>
 				<br>
 				<hr style="height:5px" color="grey" width="130%">
-			</div>	
-				
+			</div>
+
 			<div class="col-md-8 highlight">
                 <h4><b>Assembling the Book</b></h4>
 				<p>Once the Adobe Illustrator files were created, they were laser cut from 3mm plywood and assembled together. The box element should be glued to the book cover to ensure it is secure and the housing should also be glued together. The foam board was cut using a craft knife after positioning the hardware.</p><br>
@@ -71,10 +70,9 @@
 				<p>The notepad should be stuck to the inside of the front cover so it is easily available when listening to the messages. To ensure the notepad does not fall onto the hardware when the book is closed, a long piece of ribbon should be glued to the back of the notepad which can be tied around the paper. The notepad should then be glued to the inside cover using PVA glue.</p><br>
 				<p>This completes the physical artefact - all that remains is to insert the hardware!</p>
             </div>
-				
+
 			<div class="col-md-4 highlight">
-{#                <h4>Audio 2</h4>#}
-{#                <p>Audio 2</p>#}
+                <p><br><img src="{{ url_for('static', filename='images/book_1.jpg')}}" alt="" class="img-rounded pull-right" width="400" ></p>
             </div>
 				
 			</article>

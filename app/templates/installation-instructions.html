@@ -22,7 +22,51 @@
 			<header class="page-header">
 				<h1 class="page-title">Installation Instructions</h1>
 			</header>
-			<p>INSERT CONTENT</p>
+			<p>The Illumi client software will set up your RPi to connect and communicate with the Illumi server. This will turn your pi into a client which receive audio and image files, allow you to record audio and take a photo, then transmit these to the Illumi server.</p>
+			<h4><b>Hardware needed</b></h4>
+			<li><a href="https://thepihut.com/collections/raspberry-pi-camera/products/raspberry-pi-camera-module">PiCamera</a></li>
+			<li><a href="https://www.amazon.co.uk/Makibes-Resistive-interface-compatible-Raspberry/dp/B00YE0UPFW/">5" LCD Screen</a></li>
+			<li><a href="https://www.amazon.co.uk/Veho-VSS-001-360-Portable-Rechargeable-Smartphones-/dp/B002CS2T4I/">Mini Speakers</a></li>
+			<li><a href="https://www.amazon.co.uk/Anker-Astro-E1-Portable-Technology/dp/B00P8SY7HQ/">Battery</a></li>
+			<li><a href="http://www.modmypi.com/electronics/buttons-and-switches/arcade-button-6.30mm-translucent-green">Button</a></li>
+			<li><a href="http://www.modmypi.com/electronics/buttons-and-switches/arcade-button-quick-connect-wires-set-of-10-pairs/">Button Wires</a></li>
+			<li><a href="https://www.amazon.co.uk/Neewer-3-5mm-Hands-Computer-Microphone/dp/B005DJNRQM/">Microphone</a></li>
+			<li><a href="https://www.amazon.co.uk/Raspberry-Pi-Model-Quad-Motherboard/dp/B01CCOXV34/">Raspberry Pi 3</a></li>
+			<li><a href="https://www.amazon.co.uk/Plugable-Headphone-Microphone-Aluminum-Compatibility/dp/B00NMXY2MO/">USB Audio adapter</a></li>
+			<li>Micro SD memory card</li>
+			<li>LED</li>
+			<li>Two cables to attach LEDs</li>
+			<br>
+
+			<h4><b>Hardware instructions</b></h4>
+			<li>Attach PiCamera ribbon cable to camera socket on RPi motherboard</li>
+			<li>Plug a cable into GPIO pin 33 and a cable into pin 44, connect the cable in 34 to the flat end of the LED and 33 to the other end.</li>
+			<li>Attach the button cables to GPIO pins 39 and 40.</li>
+			<li>Attach button connectors to these cables</li>
+			<li>Attach 5” LED Screen to the rest of the GPIO pins and connect with HDMI connector.</li>
+			<li>Plug USB audio adapter into spare usb.</li>
+			<li>Plug microphone jack into mic socket of usb adapter and speaker jack into headphone socket of usb adapter.</li>
+			<li>Plug speaker usb charger into speaker and spare usb on the RPi.</li>
+			<li>Plug in battery to RPi power socket.</li>
+			<br>
+
+			<h4><b>Software install instructions</b></h4>
+				<li>Begin with a standard Jessie install on RPi</li>
+				<li>Log into RPi and enter ‘sudo apt-get update’ at the console to update RPi.</li>
+				<li>Install these from command line:</li>
+					<ul>
+						<li>Framebuffer image view - light weight image viewer for full screen images sudo apt-get install fbi</li>
+						<li>websocket for communicating with server sudo pip install websocket-client</li>
+						<li>LAME for encoding .wavs to .mp3s sudo apt-get install lame</li>
+						<li>mpg321 for playing .mp3s sudo apt-get install mpg321</li>
+					</ul>
+				<li>Clone the illumi client software package from <a href="https://openlab.ncl.ac.uk/gitlab/b5061609/illumi">https://openlab.ncl.ac.uk/gitlab/b5061609/illumi</a> into /home/pi/illumi</li>
+				<li>Open CONFIG.py and choose a new username, this can be anything you want but must be unique to your PI, so make it creative.</li>
+				<li>To get it to run on boot, using 20 second delay type ‘sudo crontab –e’ at the console. This will brings up a crontab window.</li>
+				<li>Now, enter the line in crontab. @reboot sh /home/pi/illumi/launcher.sh >/home/pi/logs/cronlog 2>&1 </li>
+				<li>Reboot your pi with sudo reboot</li>
+				<li>Your Pi should automatically load the software and connect to the illumi server, and wait for an Illumi!</li>
+
 		</div>
 	</div>	<!-- /container -->
 {% endblock %}

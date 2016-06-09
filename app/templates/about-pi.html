@@ -32,7 +32,20 @@ About the PIs used
 			<header class="page-header">
 				<h1 class="page-title">About the Illumi Raspberry PIs</h1>
 			</header>
-			<p>INSERT CONTENT</p>
+			<p><img src="{{ url_for('static', filename='images/pi_small.jpg') }}" alt="" class="img-rounded pull-right" width="250" ></p>
+			<p>The software designed for the Raspberry Pi consists of a series of python scripts that control the interactions that are available with an Illumi Manuscript and control communication with the Illumi server. The main interactions are performed through pressing the single button on the Illumi Manuscript itself.<br></p>
+			<h4><b>The Process</b></h4>
+			<p>When an Illumi Manuscript has downloaded an Illumi from the server it begins a chain of interactions:</p><br>
+			<ol>
+			<li>At first an LED will flash as a notification and the screen will indicate that an Illumi is ready for viewing.</li>
+			<li>Upon pressing the button, the audio and image will be presented, with the option to replay.</li>
+			<li>Then the user will be prompted by the screen to reflect upon the Illumi, write down their thoughts on the notepad provided.</li>
+			<li>After a variable length of time, defaulted to one day, the notification light will flash and the screen will indicate that it is time for the user to record their reflections.</li>
+			<li>The viewer is prompted to take a photograph of their notes, with the option to retake the image if they are unhappy, then to record their audio interpretation, again with the option re-record.</li>
+			</ol>
+			<p>Progression through these stages is advanced through pressing of the button and indicated through the display and flashing of the LED. The LED flashes when the manuscript is waiting for a response, and as a countdown to the taking of images and recording of audio.<br></p>
+			<p>After this process, the newly created Illumi is uploaded to the server, which then distributes it to another connected Raspberry Pi in the chain.<br></p>
+			<p>Due to the fact that only one Raspberry Pi client in a chain will be interacted with at any one time, the Pis that are not being interacted with display the Illumi logo, and wait for a signal from the server to start downloading the latest Illumi.</p>
 		</div>
 	</div>	<!-- /container -->
 {% endblock %}

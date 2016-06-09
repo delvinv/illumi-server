@@ -32,7 +32,13 @@
 			<header class="page-header">
 				<h1 class="page-title">About the Illumi Server</h1>
 			</header>
-			<p>INSERT CONTENT</p>
+			<p>The web interface for the system is located at: <a href="http://illumi.delv.in">http://illumi.delv.in</a></p>
+			<p>The interface enables researchers to find out about Illumi, create an account, and upload their research thoughts (an audio and an image file) to a backend.</p>
+			<p>The server was developed using a Python web framework called Flask. Files were stored locally and a MySQL database was also used for storing user and illumi information.</p>
+			<p>The REST API architectural style employed enables researchers and citizens to upload their Illumis using the same form which parsed their HTTP POST packets. Since a two-way communication was required with the clients, we decided to implement a socket connection between the server and the PIs using Websockets. Thus, when an illumi was to be sent to a PI, we sent a JSON object using sockets to the client, and the client was able to parse URLs contained within and download the audio and image files.</p>
+			<p>Robustness was a key requirement for us. We noted down various edge cases that could hinder the smooth operation of the Illumi send/receive process, and built safeguards and resiliency around it. For instance, when a socket connection drops, the server logic is configured in such a manner so that when the connection is re-established (by sending out periodic connection requests until connected), the client in question resumes their position in the queue rather than join the back of the queue.</p>
+			<p>Another feature of the system is that it allows researchers to track the ‘journey’ of their Illumi. They can login to the website and interact (viewing the image files and playing back the audio files) with the Illumis that have spawned off from their initial Illumi.</p>
+			<p>Finally, when the final client in the chain of clients sends their Illumi back to the server, the server notifies the researcher by sending an email to alert them.</p></p>
 		</div>
 	</div>	<!-- /container -->
 {% endblock %}
