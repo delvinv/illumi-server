@@ -218,6 +218,7 @@ def get_whispers_from_db(user_username):
 def get_media_for_username(username):
     try:
         whisper_list = get_whispers_from_db(username)
+        print "[DB_PLEASE] " + str(whisper_list)
         whisper_media_list = []
         for whisper in whisper_list:
             whisper_id = str(whisper[0])
