@@ -32,13 +32,51 @@
 			<header class="page-header">
 				<h1 class="page-title">About the Illumi Server</h1>
 			</header>
-			<p>The web interface for the system is located at: <a href="http://illumi.delv.in">http://illumi.delv.in</a></p>
-			<p>The interface enables researchers to find out about Illumi, create an account, and upload their research thoughts (an audio and an image file) to a backend.</p>
-			<p>The server was developed using a Python web framework called Flask. Files were stored locally and a MySQL database was also used for storing user and illumi information.</p>
-			<p>The REST API architectural style employed enables researchers and citizens to upload their Illumis using the same form which parsed their HTTP POST packets. Since a two-way communication was required with the clients, we decided to implement a socket connection between the server and the PIs using Websockets. Thus, when an illumi was to be sent to a PI, we sent a JSON object using sockets to the client, and the client was able to parse URLs contained within and download the audio and image files.</p>
-			<p>Robustness was a key requirement for us. We noted down various edge cases that could hinder the smooth operation of the Illumi send/receive process, and built safeguards and resiliency around it. For instance, when a socket connection drops, the server logic is configured in such a manner so that when the connection is re-established (by sending out periodic connection requests until connected), the client in question resumes their position in the queue rather than join the back of the queue.</p>
-			<p>Another feature of the system is that it allows researchers to track the ‘journey’ of their Illumi. They can login to the website and interact (viewing the image files and playing back the audio files) with the Illumis that have spawned off from their initial Illumi.</p>
-			<p>Finally, when the final client in the chain of clients sends their Illumi back to the server, the server notifies the researcher by sending an email to alert them.</p></p>
+			<p>The web interface for the system is located at: <a href="http://illumi.delv.in">http://illumi.delv.in</a>.
+                The lead web developer for this project was Delvin Varghese. For the source code, visit <a href="https://openlab.ncl.ac.uk/gitlab/delvin/illumi-server"> GitLab</a>.</p>
+            <h4>Overview</h4>
+			<p>The interface enables researchers to find out about Illumi, create an account,
+                and upload their research thoughts (an audio and an image file) to a backend.</p>
+			<p>The server was developed using a Python web framework called Flask. Files were stored
+                locally and a MySQL database was also used for storing user and illumi information.</p>
+			<p>The REST API architectural style employed enables researchers and citizens to upload
+                their Illumis using the same form which parsed their HTTP POST packets.
+                Since a two-way communication was required with the clients, we decided to
+                implement a socket connection between the server and the PIs using Websockets.
+                Thus, when an illumi was to be sent to a PI, we sent a JSON object using sockets
+                to the client, and the client was able to parse URLs contained within and
+                download the audio and image files.</p>
+			<p>Robustness was a key requirement for us. We noted down various edge cases that could hinder
+                the smooth operation of the Illumi send/receive process,
+                and built safeguards and resiliency around it. For instance, when a socket connection drops,
+                the server logic is configured in such a manner so that when the connection is re-established
+                (by sending out periodic connection requests until connected), the client
+                in question resumes their position in the queue rather than join the back of the queue.</p>
+			<p>Another feature of the system is that it allows researchers to track the ‘journey’ of their Illumi.
+                They can login to the website and interact (viewing the image files and playing back the audio files)
+                with the Illumis that have spawned off from their initial Illumi.</p>
+			<p>Finally, when the final client in the chain of clients sends their Illumi back to the server,
+                the server notifies the researcher by sending an email to alert them.</p></p>
 		</div>
+        <div class="row">
+            <h4>Techincal Details</h4>
+            <div class="col-sm-6">
+                The following technologies were used for making the server:
+                <ul>
+                    <li>Python: the language used most in this development.</li>
+                    <li>Flask: a lightweight web-framework for building our server.</li>
+                    <li>Jinja2: A python-based templating engine for efficient HTML serving.</li>
+                    <li>Bootstrap: a neat responsive front-end framework for our nice website design :)</li>
+                    <li>Websockets: used by the server for communicating with the client Raspberry PIs.</li>
+                    <li>MySQL: the database for our system is stored here. Stores logins, links to uploaded media, and existing illumi.</li>
+                    <li>Gunicorn: a Python WSGI HTTP server for serving the python files</li>
+                    <li>Nginx a fast web-server which handles serving of static files and routing requests to our Gunicorn server.</li>
+                    <li>Amazon Web Services ES2: for hosting the server</li>
+                </ul>
+            </div>
+            <div class="col-sm-6">
+                <img src="{{ url_for('static', filename='images/python_coding.png')}}" width="450px" alt="python coding screen">
+            </div>
+        </div>
 	</div>	<!-- /container -->
 {% endblock %}
