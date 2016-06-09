@@ -197,7 +197,7 @@ def get_whispers_repeated_from_db(whisper_id, media_type):
 
 # Get all the whispers that have been initiated from the PI
 def get_whispers_from_db(user_username):
-    query = "SELECT whisper_id, title FROM BucketList.tbl_projects WHERE user_username= '{}'"
+    query = "SELECT whisper_id FROM BucketList.tbl_projects WHERE user_username= '{}'"
     final_query = query.format(user_username)
     try:
         cursor.execute(final_query)
@@ -222,7 +222,8 @@ def get_media_for_username(username):
         whisper_media_list = []
         for whisper in whisper_list:
             whisper_id = str(whisper[0])
-            whisper_name = whisper[1]
+            print "[DB PLEASE] " + str(whisper_id)
+            # whisper_name = whisper[1]
 
             audio_filenames = get_media_from_db(whisper_id, "audio")
             image_filenames = get_media_from_db(whisper_id, "image")
