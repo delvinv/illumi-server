@@ -79,4 +79,10 @@ img.pull-left { margin-right: 10px; }
 		.footer2 p { margin: 0; }
 
 	.widget-simplenav { margin-left:-5px; }		
-	.widget-simplenav a{ margin:0 5px; }		
+	.widget-simplenav a{ margin:0 5px; }
+
+img.rotated {
+    -ms-transform: rotate(90deg); /* IE 9 */
+    -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+    transform: rotate(90deg);
+}
