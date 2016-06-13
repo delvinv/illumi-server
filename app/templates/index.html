@@ -6,7 +6,7 @@ The ILLUMI Manuscripts
 
 {% block signin_or_logout_nav %}
     {% if signed_in == true%}
-        <li><a class="btn" href="logout">LOGOUT</a></li>#}
+        <li><a class="btn" href="logout">LOGOUT</a></li>
     {% else %}
         <li><a class="btn" href="signIn">SIGN IN / SIGN UP</a></li>
     {% endif %}
@@ -17,7 +17,7 @@ The ILLUMI Manuscripts
 {% endblock %}
 
 {% block body_main_block %}
-{% block body_class %} class="home" {% endblock %}
+{#    {% block body_class %} class="home" {% endblock %}#}
 	<!-- Header -->
 	<header id="head">
 		<div class="container">
